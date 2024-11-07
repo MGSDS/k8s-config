@@ -6,3 +6,4 @@ resources:
 - 2_configmap.yaml
 - 3_service.yaml
 - 4_deployment.yaml
+- 5_ingress.yaml
