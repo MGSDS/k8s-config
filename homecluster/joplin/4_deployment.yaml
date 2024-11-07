@@ -21,17 +21,19 @@ spec:
           image: etechonomy/joplin-server:latest
           ports:
             - containerPort: 22300
+          envFrom:
+          - configMapRef:
+              name: joplin-app-config
           env:
-          - name: POSTGRES_PASSWORD
+          - name: POSTGRES_PSWD
             valueFrom:
               secretKeyRef:
                 key: password
                 name: joplin-user.joplin-db.credentials.postgresql.acid.zalan.do
-          - name: POSTGRES_USER
+          - name: POSTGRES_USR
             valueFrom:
               secretKeyRef:
                 key: username
                 name: joplin-user.joplin-db.credentials.postgresql.acid.zalan.do
-          envFrom:
-          - configMapRef:
-              name: joplin-app-config
+          - name: POSTGRES_CONNECTION_STRING
+            value: "postgresql://$(POSTGRES_USR):$(POSTGRES_PSWD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)?sslmode=require"
