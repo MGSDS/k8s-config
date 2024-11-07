@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: joplin-app
+  namespace: joplin
+  labels:
+    app.kubernetes.io/name: joplin
+    app.kubernetes.io/component: service
+spec:
+  selector:
+    app: joplin-app
+  ports:
+    - protocol: TCP
+      port: 22300
+      targetPort: 22300
