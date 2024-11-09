@@ -1,0 +1,33 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: radicale-config
+  namespace: radicale
+  labels:
+    app.kubernetes.io/component: pvc
+    app.kubernetes.io/name: radicale-config
+  annotations:
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "100Mi"
+  storageClassName: "longhorn-single"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: radicale-data
+  namespace: radicale
+  labels:
+    app.kubernetes.io/component: pvc
+    app.kubernetes.io/name: radicale-data
+  annotations:
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "1Gi"
+  storageClassName: "longhorn-single"

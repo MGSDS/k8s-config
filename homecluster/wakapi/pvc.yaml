@@ -1,0 +1,15 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wakapi
+  namespace: wakapi
+  labels:
+    app.kubernetes.io/component: pvc
+    app.kubernetes.io/name: wakapi
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+  storageClassName: "longhorn-single"

@@ -1,0 +1,33 @@
+kind: "postgresql"
+apiVersion: "acid.zalan.do/v1"
+
+metadata:
+  name: "linkding-db"
+  namespace: "linkding"
+  labels:
+    team: acid
+    app.kubernetes.io/name: linkding-db
+    app.kubernetes.io/component: database
+
+spec:
+  teamId: "acid"
+  postgresql:
+    version: "16"
+  numberOfInstances: 1
+  volume:
+    size: "10Gi"
+    storageClass: "longhorn-single"
+  users:
+    linkding-user: []
+  databases:
+    linkding: linkding-user
+  allowedSourceRanges:
+    # IP ranges to access your cluster go here
+  
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi

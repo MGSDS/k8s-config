@@ -1,0 +1,68 @@
+---
+# Source: wakapi/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wakapi
+  namespace: wakapi
+  labels:
+    app.kubernetes.io/component: deployment
+    app.kubernetes.io/name: wakapi
+    app.kubernetes.io/instance: wakapi
+    app.kubernetes.io/version: "2.11.2"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wakapi
+      app.kubernetes.io/instance: wakapi
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: wakapi
+        app.kubernetes.io/instance: wakapi
+    spec:
+      serviceAccountName: wakapi
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: wakapi
+          securityContext:
+            {}
+          image: "n1try/wakapi:2.11.2"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WAKAPI_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: wakapi-user.wakapi-db.credentials.postgresql.acid.zalan.do
+            - name: WAKAPI_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: wakapi-user.wakapi-db.credentials.postgresql.acid.zalan.do
+          envFrom:
+            - configMapRef:
+                name: wakapi-config-map
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+          resources:
+            {}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: wakapi

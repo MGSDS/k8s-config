@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wallabag
+  namespace: wallabag
+  labels:
+    app.kubernetes.io/component: service
+    app.kubernetes.io/name: wallabag
+    app.kubernetes.io/instance: wallabag
+    app.kubernetes.io/version: "2.6.9"
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app.kubernetes.io/name: wallabag
+    app.kubernetes.io/instance: wallabag

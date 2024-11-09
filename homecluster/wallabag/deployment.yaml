@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallabag
+  namespace: wallabag
+  labels:
+    app.kubernetes.io/component: deployment
+    app.kubernetes.io/name: wallabag
+    app.kubernetes.io/instance: wallabag
+    app.kubernetes.io/version: "2.6.9"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wallabag
+      app.kubernetes.io/instance: wallabag
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: wallabag
+        app.kubernetes.io/instance: wallabag
+    spec:
+      
+      serviceAccountName: default
+      automountServiceAccountToken: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      containers:
+        - name: wallabag
+          image: "wallabag/wallabag:2.6.9"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POPULATE_DATABASE
+              value: "true"
+            - name: SYMFONY__ENV__DOMAIN_NAME
+              value: https://wallabag.mgsds.com
+            - name: SYMFONY__ENV__DATABASE_DRIVER
+              value: pdo_pgsql
+            - name: SYMFONY__ENV__DATABASE_HOST
+              value: wallabag-db
+            - name: SYMFONY__ENV__DATABASE_NAME
+              value: wallabag
+            - name: SYMFONY__ENV__DATABASE_CHARSET
+              value: utf8
+            - name: SYMFONY__ENV__DATABASE_PORT
+              value: "5432" 
+            - name: SYMFONY__ENV__DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: wallabag-user.wallabag-db.credentials.postgresql.acid.zalan.do
+            - name: SYMFONY__ENV__DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: wallabag-user.wallabag-db.credentials.postgresql.acid.zalan.do
+            - name: TZ
+              value: UTC
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+#            - name: cache
+#              mountPath: /var/www/wallabag/var/cache
+            - name: images
+              mountPath: /var/www/wallabag/web/assets/images
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+      volumes:
+#        - name: cache
+#          persistentVolumeClaim:
+#            claimName: wallabag-cache
+        - name: images
+          persistentVolumeClaim:
+            claimName: wallabag-images
