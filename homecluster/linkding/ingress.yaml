@@ -4,13 +4,12 @@ metadata:
   namespace: linkding
   name: linkding-ingress
   annotations:
-    spec.ingressClassName: traefik
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
   labels:
     app.kubernetes.io/name: linkding-ingress
     app.kubernetes.io/component: ingress
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     -  linkding.mgsds.com
