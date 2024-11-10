@@ -42,6 +42,12 @@ spec:
     prometheus:
       prometheusSpec:
         retention: 3d
+        serviceMonitorSelector:
+          matchLabels:
+            release: prometheus
+        podMonitorSelector:
+          matchLabels:
+            release: prometheus
         storageSpec:
           volumeClaimTemplate:
             spec:
