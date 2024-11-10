@@ -4,10 +4,4 @@ resources:
 - namespace.yaml
 - helmrepo.yaml
 - helmrelease.yaml
-
-# patches:
-# - path: add-frontend-ip.yaml
-#   target:
-#     kind: Service
-#     name: longhorn-frontend
-#     namespace: longhorn-system
+- podmonitor.yaml
