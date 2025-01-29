@@ -6,6 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: joplin
     app.kubernetes.io/component: deployment
+    app.kubernetes.io/version: 2.17
 spec:
   replicas: 1
   selector:
@@ -18,7 +19,7 @@ spec:
     spec:
       containers:
         - name: joplin-server
-          image: etechonomy/joplin-server:latest
+          image: etechonomy/joplin-server:2.17
           ports:
             - containerPort: 22300
           envFrom:
