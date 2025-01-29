@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: linkding
     app.kubernetes.io/instance: linkding
-    app.kubernetes.io/version: "1.22.1"
+    app.kubernetes.io/version: "1.37.0-plus"
     app.kubernetes.io/component: deployment
 spec:
   replicas: 1
@@ -19,12 +19,12 @@ spec:
       labels:
         app.kubernetes.io/name: linkding
         app.kubernetes.io/instance: linkding
-        app.kubernetes.io/version: "1.22.1"
+        app.kubernetes.io/version: "1.37.0-plus"
     spec:
       serviceAccountName: default
       containers:
         - name: linkding
-          image: "sissbruecker/linkding:1.22.1"
+          image: "sissbruecker/linkding:1.37.0-plus"
           imagePullPolicy: IfNotPresent
           ports:
             - name: "http"
