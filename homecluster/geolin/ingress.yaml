@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: geolin
+  name: milestones-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: geolin-auth
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: milestones-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - geolin.dev.mgsds.com
+    secretName: milestones-ingress-tls
+  rules:
+  - host: geolin.dev.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: milestones
+            port:
+              number: 8080
