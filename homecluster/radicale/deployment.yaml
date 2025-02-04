@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: deployment
     app.kubernetes.io/name: radicale
     app.kubernetes.io/instance: radicale
-    app.kubernetes.io/version: "3.2.1.0"
+    app.kubernetes.io/version: "3.4.1.0"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -29,7 +29,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: radicale
-          image: "tomsquest/docker-radicale:3.2.1.0"
+          image: "tomsquest/docker-radicale:3.4.1.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
