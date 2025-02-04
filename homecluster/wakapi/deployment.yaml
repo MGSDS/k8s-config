@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/component: deployment
     app.kubernetes.io/name: wakapi
     app.kubernetes.io/instance: wakapi
-    app.kubernetes.io/version: "2.11.2"
+    app.kubernetes.io/version: "2.12.3"
 spec:
   replicas: 1
   selector:
@@ -29,7 +29,7 @@ spec:
         - name: wakapi
           securityContext:
             {}
-          image: "n1try/wakapi:2.11.2"
+          image: "n1try/wakapi:2.12.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: WAKAPI_DB_PASSWORD
