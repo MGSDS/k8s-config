@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: linkding
     app.kubernetes.io/instance: linkding
-    app.kubernetes.io/version: "1.37.0-plus"
+    app.kubernetes.io/version: "1.37.0-plus-alpine"
     app.kubernetes.io/component: deployment
 spec:
   replicas: 1
@@ -19,12 +19,12 @@ spec:
       labels:
         app.kubernetes.io/name: linkding
         app.kubernetes.io/instance: linkding
-        app.kubernetes.io/version: "1.37.0-plus"
+        app.kubernetes.io/version: "1.37.0-plus-alpine"
     spec:
       serviceAccountName: default
       containers:
         - name: linkding
-          image: "sissbruecker/linkding:1.37.0-plus"
+          image: "sissbruecker/linkding:1.37.0-plus-alpine"
           imagePullPolicy: IfNotPresent
           ports:
             - name: "http"
@@ -43,6 +43,8 @@ spec:
                 secretKeyRef:
                   key: username
                   name: linkding.superuser
+            - name: PGSSLCERT
+              value: /tmp/postgresql.crt
             - name: LD_DB_ENGINE
               value: postgres
             - name: LD_DB_DATABASE
@@ -64,17 +66,7 @@ spec:
           volumeMounts:
             - name: linkding-storage
               mountPath: /etc/linkding/data
-          startupProbe:
-            httpGet:
-              path: /health
-              port: http
-            failureThreshold: 30
-            periodSeconds: 10 
           livenessProbe:
-            httpGet:
-              path: /health
-              port: http
-          readinessProbe:
             httpGet:
               path: /health
               port: http
