@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  annotations:
+    labels:
+      app.kubernetes.io/component: ingress
+      app.kubernetes.io/name: sso-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - sso.mgsds.com
+    secretName: keycloak-tls
+  rules:
+  - host: sso.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak-service
+            port:
+              number: 8080
