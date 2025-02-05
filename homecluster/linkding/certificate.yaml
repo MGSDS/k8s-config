@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: radicale-tls
-  namespace: radicale
+  name: linkding-tls
+  namespace: linkding
 spec:
-  secretName: radicale.mgsds.com-tls
+  secretName: linkding.mgsds.com-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: radicale.mgsds.com
+  commonName: linkding.mgsds.com
   dnsNames:
-  - radicale.mgsds.com
+  - linkding.mgsds.com

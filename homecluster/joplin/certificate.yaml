@@ -1,13 +1,13 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: radicale-tls
-  namespace: radicale
+  name: joplin-tls
+  namespace: joplin
 spec:
-  secretName: radicale.mgsds.com-tls
+  secretName: joplin.mgsds.com-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: radicale.mgsds.com
+  commonName: joplin.mgsds.com
   dnsNames:
-  - radicale.mgsds.com
+  - joplin.mgsds.com
