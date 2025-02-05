@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: geolin
+  namespace: geolin
+spec:
+  secretName: geolin-tls
+  issuerRef:
+    name: letsencrypt-dns01-issuer
+    kind: ClusterIssuer
+  commonName: geolin.dev.mgsds.com
+  dnsNames:
+  - geolin.dev.mgsds.com

@@ -12,3 +12,9 @@ spec:
     - http01:
         ingress:
           class: nginx
+    - dns01:
+      cloudflare:
+        email: eid20021@gmail.com
+        apiTokenSecretRef:
+          name: cloudflare-api-key-secret
+          key: api-key

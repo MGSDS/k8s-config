@@ -4,7 +4,6 @@ metadata:
   namespace: geolin
   name: milestones-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: geolin-auth
   labels:
@@ -15,7 +14,6 @@ spec:
   tls:
   - hosts:
     - geolin.dev.mgsds.com
-    secretName: milestones-ingress-tls
   rules:
   - host: geolin.dev.mgsds.com
     http:
