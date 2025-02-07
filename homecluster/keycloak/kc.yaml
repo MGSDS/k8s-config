@@ -1,12 +1,12 @@
 apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
-  name: keycloak
+  name: sso-mgsds-kc
 spec:
   instances: 1
   db:
     vendor: postgres
-    host: postgres-db
+    host: keycloak-db
     usernameSecret:
       name: keycloak-user.keycloak-db.credentials.postgresql.acid.zalan.do
       key: username
@@ -16,7 +16,7 @@ spec:
   http:
     tlsSecret: keycloak-tls
   hostname:
-    hostname: sso.mgsds.com
+    hostname: keycloak.mgsds.com
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
   ingress:
