@@ -3,10 +3,9 @@ kind: Ingress
 metadata:
   namespace: linkding
   name: linkding-ingress
-  annotations:
-    labels:
-      app.kubernetes.io/name: linkding-ingress
-      app.kubernetes.io/component: ingress
+  labels:
+    app.kubernetes.io/name: linkding-ingress
+    app.kubernetes.io/component: ingress
 spec:
   ingressClassName: nginx
   tls:

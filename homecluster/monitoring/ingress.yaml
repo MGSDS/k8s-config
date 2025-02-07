@@ -3,10 +3,9 @@ kind: Ingress
 metadata:
   namespace: monitoring 
   name: grafana-ingress
-  annotations:
-    labels:
-      app.kubernetes.io/component: ingress
-      app.kubernetes.io/name: grafana-ingress
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: grafana-ingress
 spec:
   ingressClassName: nginx
   tls:
