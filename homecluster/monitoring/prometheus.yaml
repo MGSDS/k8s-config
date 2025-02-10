@@ -69,3 +69,7 @@ spec:
         size: 20Gi
         finalizers:
           - kubernetes.io/pvc-protection
+      server:
+        domain: grafana.mgsds.com
+        http_port: 443
+        protocol: https
