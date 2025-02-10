@@ -60,3 +60,12 @@ spec:
     grafana:
       plugins:
         - grafana-piechart-panel
+      persistence:
+        enabled: true
+        type: sts
+        storageClassName: "longhorn-single"
+        accessModes:
+          - ReadWriteOnce
+        size: 20Gi
+        finalizers:
+          - kubernetes.io/pvc-protection
