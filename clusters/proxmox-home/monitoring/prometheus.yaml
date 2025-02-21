@@ -51,7 +51,7 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: "longhorn-single"
+              storageClassName: "longhorn"
               accessModes: ["ReadWriteOnce"]
               resources:
                 requests:
@@ -63,7 +63,7 @@ spec:
       persistence:
         enabled: true
         type: sts
-        storageClassName: "longhorn-single"
+        storageClassName: "longhorn"
         accessModes:
           - ReadWriteOnce
         size: 20Gi

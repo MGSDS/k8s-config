@@ -25,11 +25,4 @@ data:
   WAKAPI_DB_CHARSET: "utf8mb4"
   WAKAPI_DB_MAX_CONNECTIONS: "2"
   WAKAPI_DB_SSL: "true"
-  WAKAPI_MAIL_ENABLED: "false"
-  WAKAPI_MAIL_SENDER: "noreply@wakapi.dev"
-  WAKAPI_MAIL_PROVIDER: "smtp"
-  WAKAPI_MAIL_SMTP_HOST: "smtp.example.com"
-  WAKAPI_MAIL_SMTP_PORT: "465"
-  WAKAPI_MAIL_SMTP_USERNAME: "your_username"
-  WAKAPI_MAIL_SMTP_PASSWORD: "your_password"
-  WAKAPI_MAIL_SMTP_TLS: "true"
+  WAKAPI_PUBLIC_URL: https://wakapi.mgsds.com

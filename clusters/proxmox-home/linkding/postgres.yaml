@@ -2,12 +2,12 @@ kind: "postgresql"
 apiVersion: "acid.zalan.do/v1"
 
 metadata:
-  name: "wallabag-db"
-  namespace: "wallabag"
+  name: "linkding-db"
+  namespace: "linkding"
   labels:
     team: acid
+    app.kubernetes.io/name: linkding-db
     app.kubernetes.io/component: database
-    app.kubernetes.io/name: wallabag-db
 
 spec:
   teamId: "acid"
@@ -15,12 +15,11 @@ spec:
     version: "16"
   numberOfInstances: 1
   volume:
-    size: "10Gi"
-    storageClass: "longhorn-single"
+    size: "5Gi"
   users:
-    wallabag-user: []
+    linkding-user: []
   databases:
-    wallabag: wallabag-user
+    linkding: linkding-user
   allowedSourceRanges:
     # IP ranges to access your cluster go here
   
