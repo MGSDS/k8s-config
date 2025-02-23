@@ -1,0 +1,24 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: baikal
+  namespace: baikal
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: rubxkube/baikal
+      version: ' 1.2.5'
+      sourceRef:
+        kind: HelmRepository
+        name: baikal
+        namespace: baikal
+      interval: 10m
+  values:
+    volumes:
+      - name: "data"
+        size: "1Gi"
+        containerMount: "/var/www/baikal/Specific"
+      - name: "config"
+        size: "1Gi"
+        containerMount: "/var/www/baikal/config"
