@@ -21,3 +21,6 @@ spec:
       - name: "config"
         size: "1Gi"
         containerMount: "/var/www/baikal/config"
+    common:
+      image:
+        tag: latest
