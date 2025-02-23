@@ -6,7 +6,6 @@ resources:
 - certificate.yaml
 - ingress.yaml
 
-
 patches:
 - path: add-prometheus-ip.yaml
   target:
