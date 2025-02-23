@@ -7,11 +7,10 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: rubxkube/baikal
-      version: ' 1.2.5'
+      chart: baikal
       sourceRef:
         kind: HelmRepository
-        name: baikal
+        name: rubxkube
         namespace: baikal
       interval: 10m
   values:
