@@ -11,6 +11,9 @@ metadata:
       location = /.well-known/caldav {
         return 302 https://$host/dav.php;
       }
+      location = / {
+        return 302 https://$host/dav.php;
+      }
 
 spec:
   ingressClassName: nginx
