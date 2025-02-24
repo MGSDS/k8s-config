@@ -6,14 +6,11 @@ metadata:
   labels:
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: baikal-ingress
-    annotations:
-      nginx.ingress.kubernetes.io/server-snippet: |
-        location = /.well-known/caldav {
-          return 302 https://$host/dav.php;
-        }
-        location = / {
-          return 302 https://$host/dav.php;
-        }
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location = /.well-known/caldav {
+        return 302 https://$host/dav.php;
+      }
 
 spec:
   ingressClassName: nginx

@@ -18,3 +18,9 @@ spec:
   interval: 1m0s
   releaseName: ingress-nginx
   targetNamespace: ingress-nginx
+  values:
+    controller:
+      allowSnippetAnnotations: true
+      config:
+        annotations-risk-level: Critical
+
