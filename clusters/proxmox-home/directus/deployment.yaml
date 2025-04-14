@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: directus-deployment
+  namespace: directus 
+  labels:
+    app.kubernetes.io/name: directus 
+    app.kubernetes.io/component: deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: directus 
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: directus 
+    spec:
+      securityContext:
+          fsGroup: 1000
+      containers:
+        - name: directus
+          image: ghcr.io/directus/directus:latest
+          ports:
+            - containerPort: 8055
+          volumeMounts:
+              - name: directus-storage
+                mountPath: /directus/directus-storage
+              - name: directus-extensions
+                mountPath: /directus/directus-extensions
+          envFrom:
+            - configMapRef:
+                name: directus-deployment-config
+          env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: directus-user.directus-db.credentials.postgresql.acid.zalan.do
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: directus-user.directus-db.credentials.postgresql.acid.zalan.do
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: directus.admin
+                  key: password
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: directus.secret
+                  key: secret
+            - name: ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: directus.admin
+                  key: email
+      volumes:
+        - name: directus-storage
+          persistentVolumeClaim:
+            claimName: directus-storage
+        - name: directus-extensions
+          persistentVolumeClaim:
+            claimName: directus-extensions

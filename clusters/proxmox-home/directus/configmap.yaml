@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: directus-deployment-config
+  namespace: directus
+  labels:
+    app.kubernetes.io/name: directus
+    app.kubernetes.io/component: configmap
+data:
+  PUBLIC_URL: "https://directus.mgsds.com"
+  DB_CLIENT: "postgres"
+  DB_HOST: "directus-db"
+  DB_DATABASE: "directus"
+  DB_PORT: "5432"
+  DB_SSL: "true"
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  STORAGE_LOCATIONS: "local"
+  STORAGE_LOCAL_DRIVER: "local"
+  STORAGE_LOCAL_ROOT: "/directus/directus-storage"
+  EXTENSIONS_PATH: "/directus/directus-extensions"
+  ADMIN_EMAIL: "eid20021@gmail.com"
