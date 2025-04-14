@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: directus-tls
+  namespace: directus
+spec:
+  secretName: directus.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: directus.mgsds.com
+  dnsNames:
+  - directus.mgsds.com

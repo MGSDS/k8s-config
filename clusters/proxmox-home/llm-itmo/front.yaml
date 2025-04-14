@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mathllm-frontend-config
+  namespace: math-llm
+data:
+  VITE_MATHLLM_BACKEND_ADDRESS: "https://math-llm-back.dev.mgsds.com"
+  VUE_APP_ALLOWED_HOSTS: "math-llm.dev.mgsds.com"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/component: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/mathai-itmo/llmath-sandbox-webui:dev-8-merge
+          envFrom:
+            - configMapRef:
+                name: mathllm-frontend-config
+          ports:
+            - name: "http"
+              containerPort: 3000
+              protocol: "TCP"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1G
+            requests:
+              cpu: 10m
+              memory: 64Mi
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/component: service
+spec:
+  type: ClusterIP
+  ports:
+    - name: "http"
+      port: 3000
+      targetPort: "http"
+      protocol: "TCP"
+  selector:
+    app.kubernetes.io/name: frontend
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: math-llm-tls
+  namespace: math-llm
+spec:
+  secretName: math-llm.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: math-llm.dev.mgsds.com
+  dnsNames:
+  - math-llm.dev.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: math-llm
+  name: frontend
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    app.kubernetes.io/component: "ingress"
+    app.kubernetes.io/name: "frontend"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    -  math-llm.dev.mgsds.com
+    secretName: math-llm.dev.mgsds.com-tls
+  rules:
+  - host:  math-llm.dev.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 3000

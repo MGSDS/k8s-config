@@ -1,0 +1,156 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mathllm-backend-config
+  namespace: math-llm
+data:
+  Logging__LogLevel__Default: "Information"
+  Logging__LogLevel__Microsoft.AspNetCore: "Warning"
+  Kestrel__EndPoints__Http__Url: "http://+:5000"
+  
+  Jwt__Issuer: "math-llm.dev.mgsds.com"
+  Jwt__Audience: "math-llm-back.dev.mgsds.com"
+  
+  OpenAi__ChatModel__Url: "https://bothub.chat/api/v2/openai/v1"
+  OpenAi__ChatModel__Model: "qwen-2.5-72b-instruct"
+  OpenAi__SolverModel__Url: "https://bothub.chat/api/v2/openai/v1"
+  OpenAi__SolverModel__Model: "o3-mini"
+  
+  CorsOrigins: "https://math-llm.dev.mgsds.com"
+  
+  GeolinClientOptions__BaseAddress: "https://geolin.dev.mgsds.com"
+
+  POSTGRES_DATABASE: "mathllm"
+  POSTGRES_HOST: "mathllm-db"
+  POSTGRES_PORT: "5432"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/component: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/mathai-itmo/mathllm-backend:latest
+          envFrom:
+            - configMapRef:
+                name: mathllm-backend-config
+          env:
+            - name: POSTGRES_PSWD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: mathllm-user.mathllm-db.credentials.postgresql.acid.zalan.do
+            - name: POSTGRES_USR
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: mathllm-user.mathllm-db.credentials.postgresql.acid.zalan.do
+            - name: Jwt__Key
+              valueFrom:
+                secretKeyRef:
+                  key: jwt_key
+                  name: backend-secrets
+            - name: GeolinClientOptions__AuthorizationHeader
+              valueFrom:
+                secretKeyRef:
+                  key: geolin_auth_header
+                  name: backend-secrets
+            - name: OpenAi__ChatModel__Token
+              valueFrom:
+                secretKeyRef:
+                  key: openai_key
+                  name: backend-secrets
+            - name: OpenAi__SolverModel__Token
+              valueFrom:
+                secretKeyRef:
+                  key: openai_key
+                  name: backend-secrets
+            - name: ConnectionStrings__Postgres
+              value: "Server=$(POSTGRES_HOST);Port=$(POSTGRES_PORT);Database=$(POSTGRES_DATABASE);User Id=$(POSTGRES_USR);Password=$(POSTGRES_PSWD);"
+          ports:
+            - name: "http"
+              containerPort: 5000
+              protocol: "TCP"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1G
+            requests:
+              cpu: 10m
+              memory: 64Mi
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/component: service
+spec:
+  type: ClusterIP
+  ports:
+    - name: "http"
+      port: 5000
+      targetPort: "http"
+      protocol: "TCP"
+  selector:
+    app.kubernetes.io/name: backend
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: math-llm-back-tls
+  namespace: math-llm
+spec:
+  secretName: math-llm-back.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: math-llm-back.dev.mgsds.com
+  dnsNames:
+  - math-llm-back.dev.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: math-llm
+  name: backend
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    app.kubernetes.io/component: "ingress"
+    app.kubernetes.io/name: "backend"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    -  math-llm-back.dev.mgsds.com
+    secretName: math-llm-back.dev.mgsds.com-tls
+  rules:
+  - host:  math-llm-back.dev.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 5000
