@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: math-llm
+  labels:
+    app.kubernetes.io/name: math-llm
+    app.kubernetes.io/component: namespace

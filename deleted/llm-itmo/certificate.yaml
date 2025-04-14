@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: math-llm-tls
+  namespace: math-llm
+spec:
+  secretName: math-llm.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: math-llm.dev.mgsds.com
+  dnsNames:
+  - math-llm.dev.mgsds.com
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: math-llm-back-tls
+  namespace: math-llm
+spec:
+  secretName: math-llm-back.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: math-llm-back.dev.mgsds.com
+  dnsNames:
+  - math-llm-back.dev.mgsds.com
+
