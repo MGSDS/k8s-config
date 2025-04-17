@@ -15,8 +15,8 @@ data:
   OpenAi__ChatModel__Model: "qwen-2.5-72b-instruct"
   OpenAi__SolverModel__Url: "https://bothub.chat/api/v2/openai/v1"
   OpenAi__SolverModel__Model: "o3-mini"
-  
-  CorsOrigins: "https://math-llm.dev.mgsds.com"
+
+  CorsConfiguration__Enabled: "false" 
   
   GeolinClientOptions__BaseAddress: "https://geolin.dev.mgsds.com"
 
@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/mathai-itmo/mathllm-backend:latest
+          image: ghcr.io/mathai-itmo/mathllm-backend:prerelease-cors-fix
           envFrom:
             - configMapRef:
                 name: mathllm-backend-config
@@ -134,6 +134,9 @@ metadata:
   name: backend
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://math-llm.dev.mgsds.com"
+
   labels:
     app.kubernetes.io/component: "ingress"
     app.kubernetes.io/name: "backend"
