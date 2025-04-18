@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/mathai-itmo/llmath-sandbox-webui:dev-8-merge
+          image: ghcr.io/mathai-itmo/llmath-sandbox-webui:latest
           envFrom:
             - configMapRef:
                 name: mathllm-frontend-config
