@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/mathai-itmo/mathllm-backend:prerelease-cors-fix
+          image: ghcr.io/mathai-itmo/mathllm-backend:latest
           envFrom:
             - configMapRef:
                 name: mathllm-backend-config
