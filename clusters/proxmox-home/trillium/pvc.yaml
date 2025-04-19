@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: trillium-data
+  labels:
+    app.kubernetes.io/component: pvc
+    app.kubernetes.io/name: trillium-data
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "1Gi"
