@@ -28,6 +28,7 @@ spec:
       containers:
         - name: frontend
           image: ghcr.io/mathai-itmo/llmath-sandbox-webui:latest
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: mathllm-frontend-config
@@ -42,8 +43,6 @@ spec:
             requests:
               cpu: 10m
               memory: 64Mi
-      imagePullSecrets:
-        - name: regcred
 ---
 apiVersion: v1
 kind: Service

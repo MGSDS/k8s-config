@@ -45,6 +45,7 @@ spec:
       containers:
         - name: backend
           image: ghcr.io/mathai-itmo/mathllm-backend:latest
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: mathllm-backend-config
@@ -92,8 +93,6 @@ spec:
             requests:
               cpu: 10m
               memory: 64Mi
-      imagePullSecrets:
-        - name: regcred
 ---
 apiVersion: v1
 kind: Service
