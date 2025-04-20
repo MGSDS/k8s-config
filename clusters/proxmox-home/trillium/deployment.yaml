@@ -19,13 +19,22 @@ spec:
         - name: trillium
           image: zadam/trilium 
           imagePullPolicy: Always
+          env:
+            - name: RILIUM_DATA_DIR
+              value: /home/node/trilium-data
           ports:
             - name: "http"
               containerPort: 8080
               protocol: "TCP"
           volumeMounts:
             - name: trillium-data
-              mountPath: /directus/directus-storage
+              mountPath: /home/node/trilium-data 
+            - name: timezone
+              mountPath: /etc/timezone
+              readOnly: true
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
           resources:
             limits:
               cpu: 1000m
@@ -37,3 +46,9 @@ spec:
         - name: trillium-data
           persistentVolumeClaim:
             claimName: trillium-data
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
+        - name: localtime
+          hostpath:
+            path: /etc/localtime
