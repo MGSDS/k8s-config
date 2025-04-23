@@ -44,7 +44,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/mathai-itmo/mathllm-backend:prerelease-fix-streaming
+          image: ghcr.io/mathai-itmo/mathllm-backend:latest
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
