@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-root-credentials
+  namespace: math-llm
+type: Opaque
+stringData:
+  username: mongoadmin
+  password: mongoadmin
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-data-pvc
+  namespace: math-llm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workspace-pvc
+  namespace: math-llm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  namespace: math-llm
+  labels:
+    app: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:4.4.29
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-root-credentials
+                  key: username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-root-credentials
+                  key: password
+          ports:
+            - containerPort: 27017
+              name: mongo
+          volumeMounts:
+            - name: data
+              mountPath: /data/db
+            - name: workspace
+              mountPath: /workspace
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mongodb-data-pvc
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: workspace-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  namespace: math-llm
+  labels:
+    app: mongo
+spec:
+  type: ClusterIP
+  selector:
+    app: mongo
+  ports:
+    - port: 27017
+      targetPort: mongo
+      protocol: TCP
+      name: mongo

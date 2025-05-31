@@ -12,13 +12,14 @@ data:
   Jwt__Audience: "math-llm-back.dev.mgsds.com"
   
   OpenAi__ChatModel__Url: "https://bothub.chat/api/v2/openai/v1"
-  OpenAi__ChatModel__Model: "qwen-2.5-72b-instruct"
+  OpenAi__ChatModel__Model: "gpt-4.1-mini"
   OpenAi__SolverModel__Url: "https://bothub.chat/api/v2/openai/v1"
-  OpenAi__SolverModel__Model: "o3-mini"
+  OpenAi__SolverModel__Model: "o4-mini"
 
   CorsConfiguration__Enabled: "false" 
   
   GeolinClientOptions__BaseAddress: "https://geolin.dev.mgsds.com"
+  ProblemsClientOptions__BaseAddress: "http://llmath-problems-service:8000"
 
   POSTGRES_DATABASE: "mathllm"
   POSTGRES_HOST: "mathllm-db"
@@ -44,7 +45,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/mathai-itmo/mathllm-backend:latest
+          image: ghcr.io/mathai-itmo/llmath-backend:latest
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llmath-problems-deployment
+  namespace: math-llm
+  labels:
+    app: llmath-problems
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llmath-problems
+  template:
+    metadata:
+      labels:
+        app: llmath-problems
+    spec:
+      containers:
+        - name: llmath-problems
+          image: ghcr.io/mathai-itmo/llmath-problems:dev-2-merge
+          ports:
+            - containerPort: 8000
+          env:
+            - name: CONNECTION_STRING
+              value: "mongodb://mongoadmin:mongoadmin@mongo:27017/?authSource=admin"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llmath-problems-service
+  namespace: math-llm
+spec:
+  selector:
+    app: llmath-problems
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: math-llm-problems-tls
+  namespace: math-llm
+spec:
+  secretName: math-llm-problems.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: math-llm-problems.dev.mgsds.com
+  dnsNames:
+  - math-llm-problems.dev.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: math-llm
+  name: llmath-problems
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://math-llm.dev.mgsds.com"
+
+  labels:
+    app.kubernetes.io/component: "ingress"
+    app.kubernetes.io/name: "llmath-problems"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    -  math-llm-problems.dev.mgsds.com
+    secretName: math-llm-problems.dev.mgsds.com-tls
+  rules:
+  - host:  math-llm-problems.dev.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: llmath-problems-service
+            port:
+              number: 8000
