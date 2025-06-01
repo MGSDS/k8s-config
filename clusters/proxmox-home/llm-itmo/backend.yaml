@@ -12,7 +12,7 @@ data:
   Jwt__Audience: "math-llm-back.dev.mgsds.com"
   
   OpenAi__ChatModel__Url: "https://bothub.chat/api/v2/openai/v1"
-  OpenAi__ChatModel__Model: "gpt-4.1"
+  OpenAi__ChatModel__Model: "gpt-4.1-mini"
   OpenAi__SolverModel__Url: "https://bothub.chat/api/v2/openai/v1"
   OpenAi__SolverModel__Model: "o4-mini"
 
