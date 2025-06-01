@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: flux-alerts
-  labels:
-    app.kubernetes.io/name: flux-alerts
-    app.kubernetes.io/component: namespace
