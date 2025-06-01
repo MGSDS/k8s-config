@@ -5,5 +5,5 @@ resources:
 - postgres.yaml
 - mongo.yaml
 - problems.yaml
-- back.yaml
+- backend.yaml
 - front.yaml
