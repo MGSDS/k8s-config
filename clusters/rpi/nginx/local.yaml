@@ -23,4 +23,11 @@ spec:
       allowSnippetAnnotations: true
       config:
         annotations-risk-level: Critical
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: internal-nginx
+spec:
+  controller: k8s.io/ingress-nginx-local
 

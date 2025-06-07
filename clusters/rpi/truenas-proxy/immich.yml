@@ -31,7 +31,7 @@ metadata:
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: immich-ingress
 spec:
-  ingressClassName: nginx
+  ingressClassName: internal-nginx
   rules:
   - host: immich.mgsds.com
     http:

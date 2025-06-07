@@ -31,7 +31,7 @@ metadata:
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: truenas-ingress
 spec:
-  ingressClassName: nginx
+  ingressClassName: internal-nginx
   rules:
   - host: truenas.mgsds.com
     http:
