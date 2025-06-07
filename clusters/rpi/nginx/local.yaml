@@ -23,7 +23,12 @@ spec:
       allowSnippetAnnotations: true
       ingressClassResource:
         name: internal-nginx
+        controllerValue: "k8s.io/internal-ingress-nginx"
         default: false
+      extraArgs:
+        controller-class: "k8s.io/internal-ingress-nginx"
+        watch-ingress-without-class: "false"
+      electionID: ingress-controller-leader-internal
       ingressClass: internal-nginx
       config:
         annotations-risk-level: Critical
