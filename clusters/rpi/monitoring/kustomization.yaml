@@ -4,4 +4,4 @@ resources:
 - namespace.yaml
 - prometheus.yaml
 - certificate.yaml
-- ingress.yaml
+# - ingress.yaml

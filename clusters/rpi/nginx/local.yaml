@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: ingress-nginx
-      version: 4.12.0
+      version: 4.12.3
   install:
     createNamespace: true
   interval: 1m0s
@@ -21,13 +21,11 @@ spec:
   values:
     controller:
       allowSnippetAnnotations: true
+      ingressClassResource:
+        name: internal-nginx
+        default: false
+      ingressClass: internal-nginx
       config:
         annotations-risk-level: Critical
----
-apiVersion: networking.k8s.io/v1
-kind: IngressClass
-metadata:
-  name: internal-nginx
-spec:
-  controller: k8s.io/ingress-nginx-local
+
 

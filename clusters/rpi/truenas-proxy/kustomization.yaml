@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: truenas-proxy
 resources:
 - namespace.yml
-- minio.yml
-- truenas.yml
-- nextcloud.yml
-- immich.yml
+# - minio.yml
+# - truenas.yml
+# - nextcloud.yml
+# - immich.yml
