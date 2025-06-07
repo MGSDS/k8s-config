@@ -28,14 +28,12 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: telegram-flux-system
+  name: telegram-flux-system-gitrepo
   namespace: flux-system
 spec:
   eventSeverity: info
   eventSources:
     - kind: GitRepository
-      name: flux-system
-    - kind: Kustomization
       name: flux-system
   providerRef:
     name: telegram-provider
