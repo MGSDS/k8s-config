@@ -21,7 +21,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
-      version: 68.4.4 
+      version: 73.2.0
   install:
     createNamespace: true
   interval: 1m0s
@@ -66,7 +66,7 @@ spec:
         storageClassName: "longhorn"
         accessModes:
           - ReadWriteOnce
-        size: 20Gi
+        size: 100M
         finalizers:
           - kubernetes.io/pvc-protection
       server:
