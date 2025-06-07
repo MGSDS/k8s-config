@@ -33,7 +33,7 @@ metadata:
 spec:
   ingressClassName: internal-nginx
   rules:
-  - host: minio-webui.mgsds.com
+  - host: minio.mgsds.com
     http:
       paths:
       - path: /
