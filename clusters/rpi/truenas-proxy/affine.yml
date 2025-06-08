@@ -43,11 +43,11 @@ metadata:
   labels:
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: affine-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
-    nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
-    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
-    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+  # annotations:
+  #   nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+  #   nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
+  #   nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+  #   nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
 spec:
   ingressClassName: external-nginx
   tls:
