@@ -8,4 +8,4 @@ resources:
 - truenas.yml
 - nextcloud.yml
 - immich.yml
-- affine.yaml
+- affine.yml

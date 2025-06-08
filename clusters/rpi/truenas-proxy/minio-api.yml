@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-minio-external
+spec:
+  ports:
+  - name: minio
+    port: 80
+    protocol: TCP
+    targetPort: 9002
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: api-minio-external
+subsets:
+- addresses:
+  - ip: 192.168.88.25
+  ports:
+  - name: minio
+    port: 9000
+    protocol: TCP
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api-minio-tls
+spec:
+  secretName: api.minio.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: api.minio.mgsds.com
+  dnsNames:
+  - api.minio.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-ingress
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: minio-ingress
+spec:
+  ingressClassName: external-nginx
+  tls:
+  - hosts:
+    - api.minio.mgsds.com
+    secretName: api.minio.mgsds.com-tls
+  rules:
+  - host: api.minio.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-minio-external
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-ingress-internal
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: minio-ingress-internal
+spec:
+  ingressClassName: internal-nginx
+  tls:
+  - hosts:
+    - api.minio.mgsds.com
+    secretName: api.minio.mgsds.com-tls
+  rules:
+  - host: api.minio.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-minio-external
+            port:
+              number: 80
