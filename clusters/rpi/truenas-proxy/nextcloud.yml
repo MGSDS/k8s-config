@@ -35,7 +35,6 @@ spec:
   commonName: cloud.mgsds.com
   dnsNames:
   - cloud.mgsds.com
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -46,7 +45,7 @@ metadata:
     app.kubernetes.io/name: nextcloud-ingress
   annotations:
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
-    nginx.ingress.kubernetes.io/auth-tls-secret: ca-secret
+    nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
 spec:
