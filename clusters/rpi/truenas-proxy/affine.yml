@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: affine-external
+spec:
+  ports:
+  - name: affine
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: affine-external
+subsets:
+- addresses:
+  - ip: 192.168.88.25
+  ports:
+  - name: affine
+    port: 30169
+    protocol: TCP
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: affine-tls
+spec:
+  secretName: affine.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: affine.mgsds.com
+  dnsNames:
+  - affine.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: affine-ingress
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: affine-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+spec:
+  ingressClassName: external-nginx
+  tls:
+  - hosts:
+    - affine.mgsds.com
+    secretName: affine.mgsds.com-tls
+  rules:
+  - host: affine.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: affine-external
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: affine-local-ingress
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: affine-local-ingress
+spec:
+  ingressClassName: internal-nginx
+  tls:
+  - hosts:
+    - affine.mgsds.com
+    secretName: affine.mgsds.com-tls
+  rules:
+  - host: affine.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: affine-external
+            port:
+              number: 80
