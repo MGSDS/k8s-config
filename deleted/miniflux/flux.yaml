@@ -1,0 +1,41 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: gabe565
+  namespace: miniflux
+spec:
+  url: https://charts.gabe565.com
+  interval: 1h
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: miniflux
+  namespace: miniflux
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: miniflux
+      sourceRef:
+        kind: HelmRepository
+        name: gabe565
+        namespace: miniflux
+  install:
+    createNamespace: false
+  upgrade:
+    remediation:
+      retry: true
+  values:
+    image:
+      repository: ghcr.io/miniflux/miniflux
+      tag: 2.2.9
+      pullPolicy: IfNotPresent
+    controller:
+      strategy: RollingUpdate
+    serviceMonitor:
+      main:
+        enabled: true
+    postgresql:
+      enabled: false

@@ -1,0 +1,32 @@
+kind: "postgresql"
+apiVersion: "acid.zalan.do/v1"
+
+metadata:
+  name: "miniflux-db"
+  namespace: "miniflux"
+  labels:
+    team: acid
+    app.kubernetes.io/component: database
+    app.kubernetes.io/name: miniflux-db
+
+spec:
+  teamId: "acid"
+  postgresql:
+    version: "16"
+  numberOfInstances: 1
+  volume:
+    size: "100M"
+  users:
+    miniflux-user: []
+  databases:
+    miniflux: miniflux-user
+  allowedSourceRanges:
+    # IP ranges to access your cluster go here
+  
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
