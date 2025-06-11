@@ -23,6 +23,19 @@ subsets:
     port: 80
     protocol: TCP
 ---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: truenas-tls
+spec:
+  secretName: truenas.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: truenas.mgsds.com
+  dnsNames:
+  - truenas.mgsds.com
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -30,8 +43,17 @@ metadata:
   labels:
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: truenas-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
 spec:
-  ingressClassName: internal-nginx
+  ingressClassName: external-nginx
+  tls:
+  - hosts:
+    - truenas.mgsds.com
+    secretName: truenas.mgsds.com-tls
   rules:
   - host: truenas.mgsds.com
     http:
