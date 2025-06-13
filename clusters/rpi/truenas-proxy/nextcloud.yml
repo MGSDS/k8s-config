@@ -48,7 +48,7 @@ metadata:
   #   nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
   #   nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
   #   nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
-    nginx.ingress.kubernetes.io/proxy-body-size: "512m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/server-snippet: |
       location /.well-known/carddav {
         return 301 $scheme://$host/remote.php/dav;
