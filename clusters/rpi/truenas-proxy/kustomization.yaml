@@ -4,8 +4,5 @@ namespace: truenas-proxy
 resources:
 - namespace.yml
 - mtls-cert-mirror.yaml
-- minio.yml
 - truenas.yml
-- nextcloud.yml
 - immich.yml
-- affine.yml

@@ -48,6 +48,15 @@ metadata:
     nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
     nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
     nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      proxy_http_version 1.1;
+      proxy_set_header   Upgrade    $http_upgrade;
+      proxy_set_header   Connection "upgrade";
+      proxy_redirect     off;
+
+      proxy_read_timeout 600s;
+      proxy_send_timeout 600s;
+      send_timeout       600s;
 spec:
   ingressClassName: external-nginx
   tls:
