@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milestones
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: milestones
+    app.kubernetes.io/component: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: milestones
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: milestones
+    spec:
+      containers:
+        - name: milestones
+          image: ghcr.io/mathdepitmo/geolin-milestones:latest
+          ports:
+            - name: "http"
+              containerPort: 8080
+              protocol: "TCP"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1G
+            requests:
+              cpu: 10m
+              memory: 64Mi
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: milestones
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: milestones
+    app.kubernetes.io/component: service
+spec:
+  type: ClusterIP
+  ports:
+    - name: "http"
+      port: 8080
+      targetPort: "http"
+      protocol: "TCP"
+  selector:
+    app.kubernetes.io/name: milestones
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: geolin-tls
+  namespace: math-llm
+spec:
+  secretName: geolin.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: geolin.dev.mgsds.com
+  dnsNames:
+  - geolin.dev.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: math-llm
+  name: milestones-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: geolin-auth
+    labels:
+      app.kubernetes.io/component: ingress
+      app.kubernetes.io/name: milestones-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - geolin.dev.mgsds.com
+    secretName: geolin.dev.mgsds.com-tls
+  rules:
+  - host: geolin.dev.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: milestones
+            port:
+              number: 8080
+
