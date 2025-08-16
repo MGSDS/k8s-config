@@ -13,7 +13,7 @@ spec:
   tls:
   - hosts:
     -  wallabag.mgsds.com
-    secretName: wallabag-ingress-tls
+    secretName: wallabag.mgsds.com-tls
   rules:
   - host: wallabag.mgsds.com
     http:
