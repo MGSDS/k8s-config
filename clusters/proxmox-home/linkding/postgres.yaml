@@ -4,6 +4,7 @@ apiVersion: "acid.zalan.do/v1"
 metadata:
   name: "linkding-db"
   namespace: "linkding"
+  annotations: 
   labels:
     team: acid
     app.kubernetes.io/name: linkding-db
@@ -15,13 +16,12 @@ spec:
     version: "16"
   numberOfInstances: 1
   volume:
-    size: "5Gi"
+    size: "1Gi"
   users:
     linkding-user: []
   databases:
     linkding: linkding-user
   allowedSourceRanges:
-    # IP ranges to access your cluster go here
   
   resources:
     requests:

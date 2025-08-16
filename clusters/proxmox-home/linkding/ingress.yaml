@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   namespace: linkding
   name: linkding-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
   labels:
     app.kubernetes.io/name: linkding-ingress
     app.kubernetes.io/component: ingress
