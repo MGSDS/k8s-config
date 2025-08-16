@@ -4,30 +4,36 @@ metadata:
   name: truenas-tls
   namespace: truenas-proxy
 spec:
-  secretName: nas.local.mgsds.com-tls
+  secretName: nas.mgsds.com-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: nas.local.mgsds.com
+  commonName: nas.mgsds.com
   dnsNames:
-  - nas.local.mgsds.com
+  - nas.mgsds.com
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: truenas-proxy
   name: truenas-ingress
+  annotations:
+   cert-manager.io/cluster-issuer: letsencrypt-prod
+   nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+   nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
+   nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+   nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
   labels:
-    app.kubernetes.io/component: ingress
     app.kubernetes.io/name: truenas-ingress
+    app.kubernetes.io/component: ingress
 spec:
-  ingressClassName: internal-nginx
+  ingressClassName: nginx
   tls:
   - hosts:
-    -  nas.local.mgsds.com
-    secretName: nas.local.mgsds.com-tls
+    - nas.mgsds.com
+    secretName: nas.mgsds.com-tls
   rules:
-  - host: nas.local.mgsds.com
+  - host: nas.mgsds.com
     http:
       paths:
       - path: /
