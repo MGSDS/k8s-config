@@ -19,6 +19,13 @@ spec:
   releaseName: ingress-nginx-local
   targetNamespace: ingress-nginx
   values:
+    electionID: ingress-controller-leader
+    ingressClass: internal-nginx
+    ingressClassResource:
+      name: internal-nginx
+      enabled: true
+      default: false
+      controllerValue: "k8s.io/internal-ingress-nginx"
     controller:
       allowSnippetAnnotations: true
       config:
