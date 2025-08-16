@@ -11,6 +11,10 @@ spec:
       targetPort: 80
       protocol: TCP
       name: admin
+    - port: 30027
+      targetPort: 30027
+      protocol: TCP
+      name: nextcloud
 ---
 apiVersion: v1
 kind: Endpoints
@@ -23,4 +27,7 @@ subsets:
   ports:
   - name: admin
     port: 80
+    protocol: TCP
+  - name: nextcloud
+    port: 30027
     protocol: TCP
