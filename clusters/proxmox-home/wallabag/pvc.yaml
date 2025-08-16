@@ -1,20 +1,3 @@
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
- name: wallabag-cache
- namespace: wallabag
- labels:
-   app.kubernetes.io/component: pvc
-   app.kubernetes.io/name: wallabag
- annotations:
-spec:
- accessModes:
-   - "ReadWriteOnce"
- resources:
-   requests:
-     storage: "100M"
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
