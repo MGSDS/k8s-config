@@ -4,7 +4,7 @@ metadata:
   name: telegram
   namespace: flux-system
 spec:
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
     - kind: GitRepository
       name: '*'
