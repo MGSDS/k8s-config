@@ -54,7 +54,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: filebrowser
+            name: truenas
             port:
               number: 30051
 ---
@@ -76,6 +76,10 @@ metadata:
       proxy_read_timeout 600s;
       proxy_send_timeout 600s;
       send_timeout       600s;
+    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+    nginx.ingress.kubernetes.io/auth-tls-secret: truenas-proxy/ca-secret
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
   labels:
     app.kubernetes.io/name: immich-ingress
     app.kubernetes.io/component: ingress
