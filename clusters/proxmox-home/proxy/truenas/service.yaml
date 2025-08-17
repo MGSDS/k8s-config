@@ -19,6 +19,10 @@ spec:
       targetPort: 30041
       protocol: TCP
       name: immich
+    - port: 30051
+      targetPort: 30051
+      protocol: TCP
+      name: filebrowser
 ---
 apiVersion: v1
 kind: Endpoints
@@ -37,4 +41,7 @@ subsets:
     protocol: TCP
   - name: immich
     port: 30041
+    protocol: TCP
+  - name: filebrowser
+    port: 30051
     protocol: TCP
