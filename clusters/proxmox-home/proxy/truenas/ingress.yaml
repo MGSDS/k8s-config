@@ -61,9 +61,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: truenas-proxy
-  name: truenas-ingress
+  name: nextcloud-ingress
   annotations:
-   cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: 51200m   
+    nginx.ingress.kubernetes.io/server-snippet: |-
+       server_tokens off;
+       proxy_hide_header X-Powered-By;
+    nginx.ingress.kubernetes.io/cors-allow-headers: X-Forwarded-For
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 225m
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: 60s
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
   labels:
     app.kubernetes.io/name: truenas-ingress
     app.kubernetes.io/component: ingress
