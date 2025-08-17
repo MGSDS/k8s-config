@@ -30,8 +30,8 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - nas.mgsds.com
-    secretName: nas.mgsds.com-tls
+    - longhorn.mgsds.com
+    secretName: longhorn.mgsds.com-tls
   rules:
   - host: longhorn.mgsds.com
     http:
