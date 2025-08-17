@@ -40,6 +40,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: kubernetes-dashboard-web
+            name: dash-kubernetes-dashboard-web
             port:
               number: 8000
