@@ -12,9 +12,9 @@ data:
   Jwt__Audience: "math-llm-back.dev.mgsds.com"
   
   OpenAi__ChatModel__Url: "https://bothub.chat/api/v2/openai/v1"
-  OpenAi__ChatModel__Model: "gpt-5"
+  OpenAi__ChatModel__Model: "o4-mini"
   OpenAi__SolverModel__Url: "https://bothub.chat/api/v2/openai/v1"
-  OpenAi__SolverModel__Model: "o3"
+  OpenAi__SolverModel__Model: "o4-mini-high"
 
   CorsConfiguration__Enabled: "false" 
   
