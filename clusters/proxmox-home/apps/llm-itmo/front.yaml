@@ -80,6 +80,44 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: math-llm
+  name: frontend-admin
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: admin
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+  labels:
+    app.kubernetes.io/component: "ingress"
+    app.kubernetes.io/name: "frontend"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    -  math-llm.dev.mgsds.com
+    secretName: math-llm.dev.mgsds.com-tls
+  rules:
+  - host:  math-llm.dev.mgsds.com
+    http:
+      paths:
+      - path: /statistics
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 3000
+      - path: /llmath-problems
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: math-llm
   name: frontend
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod

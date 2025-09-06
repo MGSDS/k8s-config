@@ -73,9 +73,9 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: geolin-auth
-    labels:
-      app.kubernetes.io/component: ingress
-      app.kubernetes.io/name: milestones-ingress
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: milestones-ingress
 spec:
   ingressClassName: nginx
   tls:
