@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: homeassistant
+resources:
+- namespace.yaml
+- deployment.yml
+- ingress.yml
+- pvc.yml
+- service.yml
+configMapGenerator:
+- literals:
+  - TZ="UTC"
+  name: home-assistant-config
+labels:
+- includeSelectors: true
+  pairs:
+    app: home-assistant
+    app.kubernetes.io/name: home-assistant

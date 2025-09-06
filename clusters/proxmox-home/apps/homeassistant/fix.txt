@@ -1,0 +1,11 @@
+1. kubectl exec -n homeassistant -it $(kubectl get pod -n homeassistant | grep home-assistant | awk '{print $1}') -- /bin/sh
+2. Добавить в конец /config/configuration.yaml
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.42.0.0/16
+
+homeassistant:
+  external_url: "https://ha.mgsds.com"
+
+3. kubectl delete pod -n homeassistant -it $(kubectl get pod -n homeassistant | grep home-assistant | awk '{print $1}')
