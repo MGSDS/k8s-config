@@ -19,6 +19,7 @@ spec:
       containers:
         - name: milestones
           image: ghcr.io/mathdepitmo/geolin-milestones:latest
+          imagePullPolicy: Always
           ports:
             - name: "http"
               containerPort: 8080
