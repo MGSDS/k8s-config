@@ -1,0 +1,79 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llm-itmo-backend
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backend
+  namespaceSelector:
+    matchNames:
+      - math-llm
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics
+      scrapeTimeout: 10s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llm-itmo-frontend
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frontend
+  namespaceSelector:
+    matchNames:
+      - math-llm
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics
+      scrapeTimeout: 10s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llm-itmo-milestones
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: milestones
+  namespaceSelector:
+    matchNames:
+      - math-llm
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics
+      scrapeTimeout: 10s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llm-itmo-problems
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: llmath-problems
+  namespaceSelector:
+    matchNames:
+      - math-llm
+  endpoints:
+    - port: "8000"
+      interval: 30s
+      path: /metrics
+      scrapeTimeout: 10s

@@ -8,3 +8,4 @@ resources:
 - problems.yaml
 - backend.yaml
 - front.yaml
+- servicemonitor.yaml

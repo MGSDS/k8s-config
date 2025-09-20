@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - helmrepo.yaml
-- internet.yaml 
+- internet.yaml
+- servicemonitor.yaml 

@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kubernetes-dashboard
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubernetes-dashboard
+  namespaceSelector:
+    matchNames:
+      - kubernetes-dashboard
+  endpoints:
+    - port: https
+      interval: 30s
+      path: /metrics
+      scrapeTimeout: 10s
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true

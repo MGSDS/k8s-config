@@ -4,3 +4,4 @@ resources:
 - namespace.yaml
 - app.yaml
 - ingress.yaml
+- servicemonitor.yaml

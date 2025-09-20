@@ -5,3 +5,4 @@ resources:
 - repository.yaml
 - helmrelease.yaml
 - ingress.yaml
+- servicemonitor.yaml
