@@ -22,7 +22,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: linkding
-          image: "sissbruecker/linkding:1.42.0-plus-alpine"
+          image: "sissbruecker/linkding:latest-plus-alpine"
           imagePullPolicy: IfNotPresent
           ports:
             - name: "http"

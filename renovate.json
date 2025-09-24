@@ -5,14 +5,5 @@
   ],
   "flux": {
     "fileMatch": ["clusters/proxmox-home/.+\\.yaml$"]
-  },
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchManagers": ["kubernetes"],
-      "matchDepTypes": ["image"],
-      "matchPackageNames": ["sissbruecker/linkding"],
-      "versioning": "docker"
-    }
-  ]
+  }
 }
