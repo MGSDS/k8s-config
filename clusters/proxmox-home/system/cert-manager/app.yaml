@@ -28,3 +28,6 @@ spec:
       enabled: true
       servicemonitor:
         enabled: true
+        labels:
+          release: prometheus
+        namespace: monitoring
