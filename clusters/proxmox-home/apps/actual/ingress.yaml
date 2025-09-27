@@ -18,7 +18,6 @@ metadata:
   namespace: actual
   name: actual-ingress-mtls
   annotations:
-   cert-manager.io/cluster-issuer: letsencrypt-prod
    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
    nginx.ingress.kubernetes.io/auth-tls-secret: actual/ca-secret
    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"

@@ -136,7 +136,6 @@ metadata:
   namespace: math-llm
   name: backend
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-origin: "https://math-llm.dev.mgsds.com"
   labels:

@@ -82,7 +82,6 @@ metadata:
   namespace: math-llm
   name: frontend-admin
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: admin
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
@@ -120,7 +119,6 @@ metadata:
   namespace: math-llm
   name: frontend
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
   labels:
     app.kubernetes.io/component: "ingress"
     app.kubernetes.io/name: "frontend"
