@@ -9,3 +9,4 @@ resources:
 - backend.yaml
 - front.yaml
 - servicemonitor.yaml
+- video.yaml

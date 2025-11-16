@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mathllm-video-pvc
+  namespace: math-llm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5G
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mathllm-video-config
+  namespace: math-llm
+data:
+  VIDEOAPP_OPENAI_API_BASE: "https://bothub.chat/api/v2/openai/v1"
+  VIDEOAPP_OPENAI_MODEL: "gpt-5-nano"
+  VIDEOAPP_OPENAI_STT_API_BASE: "https://bothub.chat/api/v2/openai/v1"
+  VIDEOAPP_OPENAI_STT_MODEL: "whisper-1"
+  VIDEOAPP_WHISPER_LANGUAGE: "ru"
+  VIDEOAPP_STT_MODE: "api"
+  VIDEOAPP_WHISPER_LOCAL_MODEL: "small"
+  VIDEOAPP_DISABLE_CORS: "1"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: video
+    app.kubernetes.io/component: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: video
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: video
+    spec:
+      containers:
+      - name: video
+        image: ghcr.io/mathai-itmo/llmath-video:latest
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: mathllm-video-config
+        env:
+          - name: VIDEOAPP_OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                key: openai_key
+                name: backend-secrets
+          - name: VIDEOAPP_OPENAI_STT_API_KEY
+            valueFrom:
+              secretKeyRef:
+                key: openai_key
+                name: backend-secrets
+        ports:
+          - name: "http"
+            containerPort: 5001
+            protocol: "TCP"
+        volumeMounts:
+          - mountPath: /app/data
+            name: data
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2G
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mathllm-video-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: video
+  namespace: math-llm
+  labels:
+    app.kubernetes.io/name: video
+    app.kubernetes.io/component: service
+spec:
+  type: ClusterIP
+  ports:
+    - name: "http"
+      port: 5001
+      targetPort: "http"
+      protocol: "TCP"
+  selector:
+    app.kubernetes.io/name: video
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: math-llm-video-tls
+  namespace: math-llm
+spec:
+  secretName: math-llm-video.dev.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: math-llm-video.dev.mgsds.com
+  dnsNames:
+  - math-llm-video.dev.mgsds.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: math-llm
+  name: video
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 5G
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://math-llm.dev.mgsds.com"
+  labels:
+    app.kubernetes.io/component: "ingress"
+    app.kubernetes.io/name: "video"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    -  math-llm-video.dev.mgsds.com
+    secretName: math-llm-video.dev.mgsds.com-tls
+  rules:
+  - host:  math-llm-video.dev.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: video
+            port:
+              number: 5001
