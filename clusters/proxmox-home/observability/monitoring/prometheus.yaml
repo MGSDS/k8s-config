@@ -43,8 +43,8 @@ spec:
       service:
         type: "LoadBalancer"
       prometheusSpec:
-        retention: 4d
-        retentionSize: 50Gi
+        retention: 7d
+        retentionSize: 50GB
         serviceMonitorSelector:
           matchLabels:
             release: prometheus
