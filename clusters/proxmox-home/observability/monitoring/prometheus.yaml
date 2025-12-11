@@ -77,6 +77,8 @@ spec:
         http_port: 443
         protocol: https
       grafana.ini:
+        auth:
+          oauth_allow_insecure_email_lookup: true
         server:
           domain: grafana.mgsds.com
           root_url: https://grafana.mgsds.com
