@@ -78,4 +78,5 @@ spec:
         protocol: https
       grafana.ini:
         server:
-          domain: https://grafana.mgsds.com
+          domain: grafana.mgsds.com
+          root_url: https://grafana.mgsds.com
