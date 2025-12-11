@@ -4,6 +4,5 @@ resources:
 - namespace.yaml
 - postgres.yaml
 - sealed-db-secret.yaml
-- db-secret.yaml
 - helm.yaml
 - ingress.yaml
