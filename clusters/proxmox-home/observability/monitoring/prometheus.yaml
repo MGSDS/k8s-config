@@ -76,3 +76,6 @@ spec:
         domain: grafana.mgsds.com
         http_port: 443
         protocol: https
+      grafana.ini:
+        server:
+          domain: https://grafana.mgsds.com
