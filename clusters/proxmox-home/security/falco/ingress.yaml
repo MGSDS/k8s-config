@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: falco
+  name: falco-ui-ingress
+  annotations:
+   nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+   nginx.ingress.kubernetes.io/auth-tls-secret: proxy/ca-secret
+   nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+   nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: falco-ui-ingress
+    
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - falco.sec.mgsds.com
+    secretName: falco-tls
+  rules:
+  - host: falco.sec.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: falco-falcosidekick-ui
+            port:
+              number: 2802
