@@ -31,10 +31,15 @@ spec:
     remediation:
       retries: 3
 
-  # valuesFrom:
+  valuesFrom:
+    - kind: Secret
+      name: falco-telegram-secret
+      valuesKey: telegramToken
+      targetPath: telegram.token
   #   - kind: ConfigMap
   #     name: falco-custom-rules
   #     valuesKey: custom_rules.yaml
+
 
   values:
     tty: true
@@ -43,3 +48,6 @@ spec:
       enabled: true
       webui:
         enabled: true
+    telegram:
+      chatid: "-1002680790669"
+      minimumpriority: warning
