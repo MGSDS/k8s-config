@@ -1,0 +1,66 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: vaultwarden
+  namespace: vaultwarden
+spec:
+  interval: 1h
+  url: https://guerzon.github.io/vaultwarden
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: vaultwarden
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: vaultwarden
+      sourceRef:
+        kind: HelmRepository
+        name: vaultwarden
+        namespace: vaultwarden
+      version: "0.34.4"
+  values:
+    domain: "https://vaultwarden.mgsds.com"
+    signupsAllowed: true
+
+    storage:
+      data:
+        name: "vaultwarden-data-pvc"
+        size: "1Gi"
+        class: "longhorn"
+        accessMode: "ReadWriteOnce"
+      attachments:
+        name: "vaultwarden-attachment-pvc"
+        size: "1Gi"
+        class: "longhorn"
+        accessMode: "ReadWriteOnce"
+      
+    database:
+      type: "postgresql"
+      host: "vaultwarden-db"
+      dbName: "vaultwarden"
+      port: "5432"
+
+    ingress:
+      enabled: true
+      class: "nginx"
+      tlsSecret: vaultwarden-tls
+      hostname: vaultwarden.mgsds.com
+    
+    adminToken:
+      existingSecret: vaultwarden-admin-token
+      existingSecretKey: adminToken
+
+  valuesFrom:
+    - kind: Secret
+      name: vaultwarden-user.vaultwarden-db.credentials.postgresql.acid.zalan.do
+      valuesKey: username
+      targetPath: database.username
+    - kind: Secret
+      name: vaultwarden-user.vaultwarden-db.credentials.postgresql.acid.zalan.do
+      valuesKey: password
+      targetPath: database.password
