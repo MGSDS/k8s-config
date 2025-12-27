@@ -17,8 +17,8 @@ spec:
   interval: 10m
   chart:
     spec:
-      chart: loki-stack
-      version: '2.10.x'
+      chart: loki
+      version: '6.49.0'
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -33,8 +33,5 @@ spec:
         storageClassName: longhorn
       image:
         tag: 2.9.7
-    promtail:
-      tolerations:
-        - operator: Exists
 
  
