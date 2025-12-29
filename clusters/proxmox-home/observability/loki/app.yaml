@@ -46,6 +46,12 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
+      persistence:
+        enabled: true
+        size: 10Gi
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteOnce
   valuesFrom:
     - kind: Secret
       name: loki-s3-credentials
