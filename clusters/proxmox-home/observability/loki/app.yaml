@@ -27,11 +27,41 @@ spec:
   values:
     loki:
       auth_enabled: false
-      persistence:
-        enabled: true
-        size: 10Gi
-        storageClassName: longhorn
-      image:
-        tag: 2.9.7
+      storage:
+        type: s3
+        bucketNames:
+          chunks: loki-chunks
+          ruler: loki-ruler
+          admin: loki-admin
+        s3:
+          s3ForcePathStyle: false
+          insecure: false
+        use_thanos_objstore: false
+      schemaConfig:
+        configs:
+          - from: "2024-01-01"
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+  valuesFrom:
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: keyId
+      targetPath: loki.storage.s3.accessKeyId
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: secretKey
+      targetPath: loki.storage.s3.secretAccessKey
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: endpoint
+      targetPath: loki.storage.s3.endpoint
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: region
+      targetPath: loki.storage.s3.region
 
  
