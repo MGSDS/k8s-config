@@ -52,6 +52,10 @@ spec:
         storageClass: longhorn
         accessModes:
           - ReadWriteOnce
+    backend:
+      replicas: 1
+    write:
+      replicas: 1
   valuesFrom:
     - kind: Secret
       name: loki-s3-credentials
