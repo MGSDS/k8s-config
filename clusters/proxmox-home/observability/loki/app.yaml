@@ -58,6 +58,8 @@ spec:
       replicas: 1
     read:
       replicas: 1
+    memcached:
+      enabled: true
   valuesFrom:
     - kind: Secret
       name: loki-s3-credentials
