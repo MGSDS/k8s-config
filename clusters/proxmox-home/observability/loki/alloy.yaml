@@ -1,0 +1,42 @@
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy
+  namespace: loki
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: alloy
+      version: '1.5.1'
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: loki
+      interval: 1h
+  values:
+    alloy:
+      configMap:
+        create: true
+        content: |
+          discovery.kubernetes "pods" {
+            role = "pod"
+          }
+
+          loki.source.kubernetes "pods" {
+            targets    = discovery.kubernetes.pods.targets
+            forward_to = [loki.write.loki.receiver]
+          }
+
+          loki.write "loki" {
+            endpoint {
+              url = "http://loki-gateway:80"
+            }
+          }
+
+      mounts:
+        varlog: true 
+        dockercontainers: false
+    controller:
+      type: daemonset
