@@ -59,7 +59,7 @@ spec:
     read:
       replicas: 1
     memcached:
-      enabled: false
+      enabled: true
     chunksCache:
       enabled: false
     resultsCache:
