@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-custom-rules
+  namespace: falco
+data:
+  custom_rules.yaml: |
+    - rule: Allow Spilo PostgreSQL maintenance read shadow
+      desc: Allow legitimate Spilo/Patroni PostgreSQL maintenance processes to read /etc/shadow
+      condition: >
+        evt.type = openat and
+        evt.arg.name = /etc/shadow and
+        container.image.repository = "ghcr.io/zalando/spilo" and
+        (proc.name = "vacuumdb" or proc.name = "reindexdb" or proc.name = "analyze_cluster" or proc.name = "pg_maintenance" or proc.name = "post_init.sh") and
+        user.name = "postgres"
+      enabled: true
+      action: allow
+      priority: DEBUG
+      output: >
+        Allowed Spilo maintenance operation
+        (proc=%proc.name user=%user.name container=%container.name)
+      tags: [database, spilo, maintenance]
+

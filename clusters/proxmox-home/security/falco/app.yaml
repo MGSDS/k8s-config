@@ -36,9 +36,9 @@ spec:
       name: falco-telegram-secret
       valuesKey: telegramToken
       targetPath: falcosidekick.config.telegram.token
-  #   - kind: ConfigMap
-  #     name: falco-custom-rules
-  #     valuesKey: custom_rules.yaml
+    - kind: ConfigMap
+      name: falco-custom-rules
+      valuesKey: custom_rules.yaml
 
 
   values:

@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - telegram-secret.yaml
+- custom-rules.yaml
 - app.yaml
 - certificate.yaml
 - ingress.yaml
