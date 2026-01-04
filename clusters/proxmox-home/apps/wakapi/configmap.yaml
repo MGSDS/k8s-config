@@ -1,0 +1,28 @@
+---
+# Source: wakapi/templates/config-map.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wakapi-config-map
+  namespace: wakapi
+  labels:
+    app.kubernetes.io/component: config-map
+    app.kubernetes.io/name: wakapi-config-map
+data:
+  ENVIRONMENT: "production"
+  WAKAPI_PORT: "3000"
+  WAKAPI_LISTEN_IPV4: "0.0.0.0"
+  WAKAPI_BASE_PATH: "/"
+  WAKAPI_PASSWORD_SALT: ""
+  WAKAPI_INSECURE_COOKIES: "false"
+  WAKAPI_COOKIE_MAX_AGE: "172800"
+  WAKAPI_ALLOW_SIGNUP: "false"
+  WAKAPI_EXPOSE_METRICS: "false"
+  WAKAPI_DB_HOST: "wakapi-db"
+  WAKAPI_DB_PORT: "5432"
+  WAKAPI_DB_NAME: "wakapi"
+  WAKAPI_DB_TYPE: "postgres"
+  WAKAPI_DB_CHARSET: "utf8mb4"
+  WAKAPI_DB_MAX_CONNECTIONS: "2"
+  WAKAPI_DB_SSL: "true"
+  WAKAPI_PUBLIC_URL: https://wakapi.mgsds.com
