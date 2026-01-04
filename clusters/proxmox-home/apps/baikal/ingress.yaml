@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: baikal
+  name: baikal-ingress
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: baikal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location = /.well-known/caldav {
+        return 302 https://$host/dav.php;
+      }
+      location = / {
+        return 302 https://$host/dav.php;
+      }
+
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - baikal.mgsds.com
+    secretName: baikal.mgsds.com-tls
+  rules:
+  - host: baikal.mgsds.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: baikal
+            port:
+              number: 80
