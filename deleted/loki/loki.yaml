@@ -1,0 +1,87 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+    name: grafana
+    namespace: loki
+spec:
+    interval: 1h
+    url: https://grafana.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: loki
+    namespace: loki
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: loki
+      version: '6.49.0'
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: loki
+      interval: 1h
+  values:
+    loki:
+      auth_enabled: false
+      commonConfig:
+        replication_factor: 1
+      storage:
+        type: s3
+        bucketNames:
+          chunks: loki-chunks
+          ruler: loki-ruler
+          admin: loki-admin
+        s3:
+          s3ForcePathStyle: false
+          insecure: false
+        use_thanos_objstore: false
+      schemaConfig:
+        configs:
+          - from: "2024-01-01"
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+      persistence:
+        enabled: true
+        size: 10Gi
+        storageClass: longhorn
+        accessModes:
+          - ReadWriteOnce
+    backend:
+      replicas: 1
+    write:
+      replicas: 1
+    read:
+      replicas: 1
+    memcached:
+      enabled: true
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
+  valuesFrom:
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: keyId
+      targetPath: loki.storage.s3.accessKeyId
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: secretKey
+      targetPath: loki.storage.s3.secretAccessKey
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: endpoint
+      targetPath: loki.storage.s3.endpoint
+    - kind: Secret
+      name: loki-s3-credentials
+      valuesKey: region
+      targetPath: loki.storage.s3.region
+
+ 
