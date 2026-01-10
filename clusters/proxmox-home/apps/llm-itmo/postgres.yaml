@@ -22,6 +22,7 @@ spec:
     mathllm: mathllm-user
   allowedSourceRanges:
     # IP ranges to access your cluster go here
+  enableReplicaLoadBalancer: true
   
   resources:
     requests:

@@ -91,7 +91,7 @@ metadata:
   labels:
     app: mongo
 spec:
-  type: ClusterIP
+  type: LoadBalancre
   selector:
     app: mongo
   ports:
