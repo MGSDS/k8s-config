@@ -10,35 +10,30 @@ spec:
     kind: ClusterIssuer
   commonName: actual.mgsds.com
   dnsNames:
-  - actual.mgsds.com
+    - actual.mgsds.com
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: actual
   name: actual-ingress-mtls
-  annotations:
-   nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
-   nginx.ingress.kubernetes.io/auth-tls-secret: actual/ca-secret
-   nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
-   nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
   labels:
     app.kubernetes.io/name: actual-ingress-mtls
     app.kubernetes.io/component: ingress
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - actual.mgsds.com
-    secretName: actual.mgsds.com-tls
+    - hosts:
+        - actual.mgsds.com
+      secretName: actual.mgsds.com-tls
   rules:
-  - host: actual.mgsds.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: actual-actualbudget
-            port:
-              number: 5006
+    - host: actual.mgsds.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: actual-actualbudget
+                port:
+                  number: 5006
