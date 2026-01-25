@@ -21,9 +21,11 @@ spec:
   databases:
     mathllm: mathllm-user
   allowedSourceRanges:
-    # IP ranges to access your cluster go here
+    - 192.168.40.0/24
+    - 192.168.88.0/24
+  enableMasterLoadBalancer: true
   enableReplicaLoadBalancer: true
-  
+
   resources:
     requests:
       cpu: 100m
