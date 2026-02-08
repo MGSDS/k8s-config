@@ -20,6 +20,7 @@ metadata:
   labels:
     app.kubernetes.io/name: actual-ingress-mtls
     app.kubernetes.io/component: ingress
+  annotations:
     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.0.0/16"
 spec:
   ingressClassName: nginx
