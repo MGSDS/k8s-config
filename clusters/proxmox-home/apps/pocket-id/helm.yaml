@@ -21,7 +21,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: anza-labs
-      version: 1.7.3
+      version: 1.7.5
   interval: 1m0s
   releaseName: pocket-id
   targetNamespace: pocket-id
