@@ -61,6 +61,11 @@ spec:
                   storage: 10Gi
     
     grafana:
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          url: http://loki.loki.svc.cluster.local:3100
+          access: proxy
       plugins:
         - grafana-piechart-panel
       persistence:
