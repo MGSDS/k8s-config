@@ -27,6 +27,8 @@ spec:
     values:
         loki:
             auth_enabled: false
+            limits_config:
+                volume_enabled: true
             persistence:
                 enabled: true
                 size: 10Gi
@@ -36,5 +38,10 @@ spec:
         promtail:
             tolerations:
                 - operator: Exists
+            config:
+                snippets:
+                    extraRelabelConfigs:
+                        - source_labels: [__meta_kubernetes_pod_label_app]
+                          target_label: service_name
 
  
