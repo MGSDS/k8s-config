@@ -8,5 +8,6 @@ spec:
   type: telegram
   address: https://api.telegram.org
   channel: "-1002680790669"
+  proxy: "http://alerts:Rf65zpPi@singbox.singbox.svc.cluster.local:2080"
   secretRef:
     name: telegram-secret
