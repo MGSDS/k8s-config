@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: singbox
+  namespace: singbox
+  labels:
+    app.kubernetes.io/name: singbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: singbox
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: singbox
+    spec:
+      containers:
+        - name: singbox
+          image: ghcr.io/sagernet/sing-box:latest
+          args: ["run", "-c", "/etc/sing-box/config.json"]
+          ports:
+            - name: http-proxy
+              containerPort: 2080
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/sing-box
+              readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: config
+          secret:
+            secretName: singbox-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: singbox
+  namespace: singbox
+  labels:
+    app.kubernetes.io/name: singbox
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: singbox
+  ports:
+    - name: http-proxy
+      port: 2080
+      targetPort: http-proxy
+      protocol: TCP
