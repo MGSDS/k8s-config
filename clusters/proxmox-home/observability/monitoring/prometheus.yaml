@@ -61,6 +61,7 @@ spec:
                   storage: 10Gi
     
     grafana:
+      envFromSecret: grafana-proxy
       additionalDataSources:
         - name: Loki
           type: loki
