@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: cert-manager
 resources:
 - namespace.yaml
+- proxy-secret.yaml
 - app.yaml
 - clusterissuer.yaml
