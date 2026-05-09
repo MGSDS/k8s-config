@@ -1,0 +1,31 @@
+kind: "postgresql"
+apiVersion: "acid.zalan.do/v1"
+
+metadata:
+  name: "homebox-db"
+  namespace: "homebox"
+  labels:
+    team: acid
+    app.kubernetes.io/name: homebox-db
+    app.kubernetes.io/component: database
+
+spec:
+  teamId: "acid"
+  postgresql:
+    version: "16"
+  numberOfInstances: 1
+  volume:
+    size: "5Gi"
+  users:
+    homebox-user: []
+  databases:
+    homebox: homebox-user
+  allowedSourceRanges:
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
