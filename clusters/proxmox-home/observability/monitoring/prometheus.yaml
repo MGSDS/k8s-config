@@ -83,8 +83,8 @@ spec:
           url: http://loki.loki.svc.cluster.local:3100
           access: proxy
         - name: VictoriaLogs
-          type: loki
-          url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428/select
+          type: victoriametrics-logs-datasource
+          url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428
           access: proxy
       dashboardProviders:
         dashboardproviders.yaml:
@@ -107,6 +107,7 @@ spec:
                 value: Prometheus
       plugins:
         - grafana-piechart-panel
+        - victoriametrics-logs-datasource
       persistence:
         enabled: true
         type: sts
