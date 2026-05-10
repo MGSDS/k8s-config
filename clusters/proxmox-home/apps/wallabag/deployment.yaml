@@ -22,6 +22,7 @@ spec:
       labels:
         app.kubernetes.io/name: wallabag
         app.kubernetes.io/instance: wallabag
+        app: wallabag
     spec:
       
       serviceAccountName: default

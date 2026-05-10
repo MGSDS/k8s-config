@@ -21,6 +21,7 @@ spec:
       labels:
         app.kubernetes.io/name: wakapi
         app.kubernetes.io/instance: wakapi
+        app: wakapi
     spec:
       serviceAccountName: wakapi
       securityContext:

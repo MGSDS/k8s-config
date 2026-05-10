@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: singbox
+        app: singbox
     spec:
       containers:
         - name: singbox
