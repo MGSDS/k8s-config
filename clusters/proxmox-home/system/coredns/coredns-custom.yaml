@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: coredns-custom
-  namespace: kube-system
-data:
-  pocket-id.override: |
-    rewrite name pocket-id.mgsds.com pocket-id.pocket-id.svc.cluster.local
