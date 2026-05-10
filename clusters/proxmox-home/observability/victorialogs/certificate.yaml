@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vlogs-tls
+  namespace: victorialogs
+spec:
+  secretName: vlogs.mgsds.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: vlogs.mgsds.com
+  dnsNames:
+  - vlogs.mgsds.com
