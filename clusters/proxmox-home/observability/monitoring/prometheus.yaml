@@ -62,7 +62,15 @@ spec:
     
     grafana:
       envFromSecret: grafana-proxy
+      sidecar:
+        datasources:
+          defaultDatasourceEnabled: false
       additionalDataSources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+          isDefault: true
+          access: proxy
         - name: Loki
           type: loki
           url: http://loki.loki.svc.cluster.local:3100
