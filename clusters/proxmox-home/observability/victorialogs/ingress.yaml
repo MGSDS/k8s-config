@@ -5,7 +5,7 @@ metadata:
   name: vlogs-ingress
   namespace: victorialogs
   annotations:
-    nginx.ingress.kubernetes.io/auth-url: "https://vlogs.mgsds.com/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.victorialogs.svc.cluster.local/oauth2/auth"
     nginx.ingress.kubernetes.io/auth-signin: "https://vlogs.mgsds.com/oauth2/start?rd=$escaped_request_uri"
   labels:
     app.kubernetes.io/component: ingress
