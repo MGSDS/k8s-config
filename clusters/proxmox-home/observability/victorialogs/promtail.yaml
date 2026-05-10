@@ -35,6 +35,15 @@ spec:
         pipelineStages:
           - cri: {}
           - decolorize: {}
+          - regex:
+              expression: '(?i)(?:^|\s|"|\b)(?:level|lvl|severity)[=:]\s*"?(?P<level>trace|debug|dbg|info|inf|notice|warn|warning|wrn|error|err|critical|fatal|panic)"?'
+          - regex:
+              expression: '(?P<level>TRACE|DEBUG|DBG|INFO|INF|NOTICE|WARN|WARNING|WRN|ERROR|ERR|CRITICAL|FATAL|PANIC)\b'
+          - template:
+              source: level
+              template: '{{ ToLower .Value }}'
+          - labels:
+              level:
         extraRelabelConfigs:
           - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
             target_label: service_name
