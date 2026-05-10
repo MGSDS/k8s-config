@@ -71,6 +71,13 @@ spec:
           url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
           isDefault: true
           access: proxy
+        - name: Alertmanager
+          type: alertmanager
+          url: http://prometheus-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+          access: proxy
+          jsonData:
+            handleGrafanaManagedAlerts: false
+            implementation: prometheus
         - name: Loki
           type: loki
           url: http://loki.loki.svc.cluster.local:3100
