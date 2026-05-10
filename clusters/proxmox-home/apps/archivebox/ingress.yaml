@@ -35,6 +35,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: archivebox
+                name: archivebox-archivebox
                 port:
                   number: 80
