@@ -78,10 +78,6 @@ spec:
           jsonData:
             handleGrafanaManagedAlerts: false
             implementation: prometheus
-        - name: Loki
-          type: loki
-          url: http://loki.loki.svc.cluster.local:3100
-          access: proxy
         - name: VictoriaLogs
           type: victoriametrics-logs-datasource
           url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428
@@ -99,12 +95,6 @@ spec:
                 path: /var/lib/grafana/dashboards/victorialogs
       dashboards:
         victorialogs:
-          victoria-logs-single-node:
-            gnetId: 22084
-            revision: 1
-            datasource:
-              - name: DS_VICTORIALOGS
-                value: VictoriaLogs
           victoria-logs-explorer:
             gnetId: 22759
             revision: 1
