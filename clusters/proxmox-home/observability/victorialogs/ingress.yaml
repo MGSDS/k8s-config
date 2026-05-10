@@ -1,13 +1,12 @@
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vlogs-ingress
   namespace: victorialogs
   annotations:
-    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
-    nginx.ingress.kubernetes.io/auth-tls-secret: victorialogs/ca-secret
-    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
-    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    nginx.ingress.kubernetes.io/auth-url: "https://vlogs.mgsds.com/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://vlogs.mgsds.com/oauth2/start?rd=$escaped_request_uri"
   labels:
     app.kubernetes.io/component: ingress
     app.kubernetes.io/name: vlogs-ingress
@@ -28,3 +27,29 @@ spec:
             name: vlogs-victoria-logs-single-server
             port:
               number: 9428
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vlogs-oauth2-proxy-ingress
+  namespace: victorialogs
+  labels:
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/name: vlogs-oauth2-proxy-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - vlogs.mgsds.com
+    secretName: vlogs.mgsds.com-tls
+  rules:
+  - host: vlogs.mgsds.com
+    http:
+      paths:
+      - path: /oauth2
+        pathType: Prefix
+        backend:
+          service:
+            name: oauth2-proxy
+            port:
+              number: 80
