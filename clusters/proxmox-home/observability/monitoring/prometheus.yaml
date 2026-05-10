@@ -86,6 +86,25 @@ spec:
           type: loki
           url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428/select
           access: proxy
+      dashboardProviders:
+        dashboardproviders.yaml:
+          apiVersion: 1
+          providers:
+            - name: victorialogs
+              orgId: 1
+              folder: VictoriaLogs
+              type: file
+              disableDeletion: true
+              options:
+                path: /var/lib/grafana/dashboards/victorialogs
+      dashboards:
+        victorialogs:
+          victoria-logs:
+            gnetId: 22759
+            revision: 1
+            datasource:
+              - name: DS_VICTORIAMETRICS
+                value: Prometheus
       plugins:
         - grafana-piechart-panel
       persistence:
