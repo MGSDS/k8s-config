@@ -33,3 +33,14 @@ spec:
       enabled: true
       size: 5Gi
       storageClassName: longhorn
+    extraEnv:
+      - name: HTTP_PROXY
+        valueFrom:
+          secretKeyRef:
+            name: archivebox-proxy
+            key: HTTP_PROXY
+      - name: HTTPS_PROXY
+        valueFrom:
+          secretKeyRef:
+            name: archivebox-proxy
+            key: HTTPS_PROXY
