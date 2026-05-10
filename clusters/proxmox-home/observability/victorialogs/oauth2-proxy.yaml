@@ -29,7 +29,7 @@ spec:
       existingSecret: oauth2-proxy-secret
     extraArgs:
       provider: oidc
-      oidc-issuer-url: http://pocket-id.pocket-id.svc.cluster.local
+      oidc-issuer-url: https://pocket-id.mgsds.com
       email-domain: "*"
       upstream: "file:///dev/null"
       cookie-secure: "true"
