@@ -27,12 +27,13 @@ spec:
   values:
     config:
       existingSecret: oauth2-proxy-secret
-      configFile: |-
-        provider = "oidc"
-        oidc_issuer_url = "https://pocket-id.mgsds.com"
-        email_domains = ["*"]
-        upstreams = ["file:///dev/null"]
-        cookie_secure = true
-        cookie_domains = [".mgsds.com"]
-        whitelist_domains = [".mgsds.com"]
-        scope = "openid profile email"
+    extraArgs:
+      provider: oidc
+      oidc-issuer-url: https://pocket-id.mgsds.com
+      email-domain: "*"
+      upstream: "file:///dev/null"
+      cookie-secure: "true"
+      cookie-domain: ".mgsds.com"
+      whitelist-domain: ".mgsds.com"
+      scope: "openid profile email"
+      skip-provider-button: "true"
