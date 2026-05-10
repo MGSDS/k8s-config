@@ -8,3 +8,4 @@ resources:
   - ingress.yaml
   - oauth2-proxy.yaml
   - oauth2-proxy-secret.yaml
+  - servicemonitor.yaml

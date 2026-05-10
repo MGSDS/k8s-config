@@ -86,25 +86,20 @@ spec:
           type: victoriametrics-logs-datasource
           url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428
           access: proxy
-      dashboardProviders:
-        dashboardproviders.yaml:
-          apiVersion: 1
-          providers:
-            - name: victorialogs
-              orgId: 1
-              folder: VictoriaLogs
-              type: file
-              disableDeletion: true
-              options:
-                path: /var/lib/grafana/dashboards/victorialogs
       dashboards:
         victorialogs:
-          victoria-logs:
+          victoria-logs-single-node:
+            gnetId: 22084
+            revision: 1
+            datasource:
+              - name: DS_VICTORIALOGS
+                value: VictoriaLogs
+          victoria-logs-explorer:
             gnetId: 22759
             revision: 1
             datasource:
-              - name: DS_VICTORIAMETRICS
-                value: Prometheus
+              - name: DS_VICTORIALOGS
+                value: VictoriaLogs
       plugins:
         - grafana-piechart-panel
         - victoriametrics-logs-datasource
