@@ -31,6 +31,10 @@ spec:
       clients:
         - url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428/insert/loki/api/v1/push
       snippets:
+        extraScrapeConfigs: ""
+        pipelineStages:
+          - cri: {}
+          - decolorize: {}
         extraRelabelConfigs:
           - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
             target_label: service_name
