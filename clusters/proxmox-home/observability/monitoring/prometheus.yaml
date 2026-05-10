@@ -21,7 +21,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
-      version: 84.3.0 
+      version: 84.3.0
   install:
     createNamespace: true
   interval: 1m0s
@@ -30,15 +30,15 @@ spec:
   values:
     kubeEtcd:
       enabled: false
-    
+
     kubeControllerManager:
       enabled: false
     kubeScheduler:
       enabled: false
-    
+
     alertmanager:
       enabled: false
-    
+
     prometheus:
       service:
         type: "LoadBalancer"
@@ -59,7 +59,7 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-    
+
     grafana:
       envFromSecret: grafana-proxy
       sidecar:
@@ -84,7 +84,7 @@ spec:
           access: proxy
         - name: VictoriaLogs
           type: loki
-          url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428
+          url: http://vlogs-victoria-logs-single-server.victorialogs.svc.cluster.local:9428/select
           access: proxy
       plugins:
         - grafana-piechart-panel
