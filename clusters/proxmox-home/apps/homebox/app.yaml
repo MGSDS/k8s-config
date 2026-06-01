@@ -27,6 +27,15 @@ spec:
   interval: 1m0s
   releaseName: homebox
   targetNamespace: homebox
+  valuesFrom:
+    - kind: Secret
+      name: homebox-oidc
+      valuesKey: client-id
+      targetPath: env.HBOX_OIDC_CLIENT_ID
+    - kind: Secret
+      name: homebox-oidc
+      valuesKey: client-secret
+      targetPath: env.HBOX_OIDC_CLIENT_SECRET
   values:
     image:
       tag: "main"
@@ -39,6 +48,10 @@ spec:
       HBOX_DATABASE_DRIVER: postgres
       HBOX_DATABASE_SSL_MODE: require
       HBOX_OPTIONS_ALLOW_REGISTRATION: false
+      HBOX_OIDC_ENABLED: "true"
+      HBOX_OIDC_ISSUER_URL: https://pocket-id.mgsds.com
+      HBOX_OIDC_AUTO_REDIRECT: "false"
+      HBOX_OPTIONS_TRUST_PROXY: "true"
     externalPostgresql:
       host: homebox-db
       port: 5432
