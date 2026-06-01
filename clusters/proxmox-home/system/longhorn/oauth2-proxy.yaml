@@ -1,0 +1,45 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: oauth2-proxy
+  namespace: longhorn-system
+spec:
+  interval: 1h
+  url: https://oauth2-proxy.github.io/manifests
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oauth2-proxy
+  namespace: longhorn-system
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: oauth2-proxy
+      version: "10.6.0"
+      sourceRef:
+        kind: HelmRepository
+        name: oauth2-proxy
+        namespace: longhorn-system
+      interval: 1h
+  values:
+    config:
+      existingSecret: oauth2-proxy-secret
+    extraArgs:
+      provider: oidc
+      skip-oidc-discovery: "true"
+      oidc-issuer-url: https://pocket-id.mgsds.com
+      login-url: https://pocket-id.mgsds.com/authorize
+      redeem-url: http://pocket-id.pocket-id.svc.cluster.local/api/oidc/token
+      oidc-jwks-url: http://pocket-id.pocket-id.svc.cluster.local/.well-known/jwks.json
+      profile-url: http://pocket-id.pocket-id.svc.cluster.local/api/oidc/userinfo
+      email-domain: "*"
+      upstream: "file:///dev/null"
+      cookie-secure: "true"
+      cookie-domain: ".mgsds.com"
+      whitelist-domain: ".mgsds.com"
+      scope: "openid profile email"
+      skip-provider-button: "true"
+      insecure-oidc-allow-unverified-email: "true"
