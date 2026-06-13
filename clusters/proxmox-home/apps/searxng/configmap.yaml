@@ -10,5 +10,9 @@ data:
       base_url: "https://search.mgsds.com"
       limiter: false
       image_proxy: true
+    outgoing:
+      proxies:
+        http: http://searxng:sxngproxy@singbox.singbox.svc.cluster.local:2080
+        https: http://searxng:sxngproxy@singbox.singbox.svc.cluster.local:2080
     ui:
       static_use_hash: true
