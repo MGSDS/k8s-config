@@ -1,17 +1,3 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: longhorn-tls
-  namespace: longhorn-system
-spec:
-  secretName: longhorn.mgsds.com-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: longhorn.mgsds.com
-  dnsNames:
-  - longhorn.mgsds.com
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -26,20 +12,19 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - longhorn.mgsds.com
-    secretName: longhorn.mgsds.com-tls
+    - hosts:
+        - longhorn.mgsds.com
   rules:
-  - host: longhorn.mgsds.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: longhorn-frontend
-            port:
-              number: 80
+    - host: longhorn.mgsds.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: longhorn-frontend
+                port:
+                  number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -52,17 +37,16 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - longhorn.mgsds.com
-    secretName: longhorn.mgsds.com-tls
+    - hosts:
+        - longhorn.mgsds.com
   rules:
-  - host: longhorn.mgsds.com
-    http:
-      paths:
-      - path: /oauth2
-        pathType: Prefix
-        backend:
-          service:
-            name: oauth2-proxy
-            port:
-              number: 80
+    - host: longhorn.mgsds.com
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy
+                port:
+                  number: 80

@@ -13,20 +13,19 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - vlogs.mgsds.com
-    secretName: vlogs.mgsds.com-tls
+    - hosts:
+        - vlogs.mgsds.com
   rules:
-  - host: vlogs.mgsds.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: vlogs-victoria-logs-single-server
-            port:
-              number: 9428
+    - host: vlogs.mgsds.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vlogs-victoria-logs-single-server
+                port:
+                  number: 9428
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -39,17 +38,16 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - vlogs.mgsds.com
-    secretName: vlogs.mgsds.com-tls
+    - hosts:
+        - vlogs.mgsds.com
   rules:
-  - host: vlogs.mgsds.com
-    http:
-      paths:
-      - path: /oauth2
-        pathType: Prefix
-        backend:
-          service:
-            name: oauth2-proxy
-            port:
-              number: 80
+    - host: vlogs.mgsds.com
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy
+                port:
+                  number: 80

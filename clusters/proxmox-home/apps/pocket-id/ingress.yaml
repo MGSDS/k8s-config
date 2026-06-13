@@ -1,17 +1,3 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: pocket-id-tls
-  namespace: pocket-id
-spec:
-  secretName: pocket-id.mgsds.com-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: pocket-id.mgsds.com
-  dnsNames:
-  - pocket-id.mgsds.com
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -23,17 +9,16 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - pocket-id.mgsds.com
-    secretName: pocket-id.mgsds.com-tls
+    - hosts:
+        - pocket-id.mgsds.com
   rules:
-  - host: pocket-id.mgsds.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: pocket-id
-            port:
-              number: 80 
+    - host: pocket-id.mgsds.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pocket-id
+                port:
+                  number: 80

@@ -21,6 +21,8 @@ spec:
   values:
     controller:
       allowSnippetAnnotations: true
+      extraArgs:
+        default-ssl-certificate: ingress-nginx/wildcard-tls
       config:
         annotations-risk-level: Critical
 

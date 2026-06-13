@@ -18,9 +18,8 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - baikal.mgsds.com
-    secretName: baikal.mgsds.com-tls
+    - hosts:
+        - baikal.mgsds.com
   rules:
   - host: baikal.mgsds.com
     http:

@@ -1,16 +1,3 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: homebox-tls
-spec:
-  secretName: box.mgsds.com-tls
-  issuerRef:
-    name: letsencrypt-prod
-    kind: ClusterIssuer
-  commonName: box.mgsds.com
-  dnsNames:
-    - box.mgsds.com
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -23,7 +10,6 @@ spec:
   tls:
     - hosts:
         - box.mgsds.com
-      secretName: box.mgsds.com-tls
   rules:
     - host: box.mgsds.com
       http:

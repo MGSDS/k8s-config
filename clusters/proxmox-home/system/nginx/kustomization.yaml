@@ -4,4 +4,5 @@ resources:
 - namespace.yaml
 - helmrepo.yaml
 - internet.yaml
-- servicemonitor.yaml 
+- servicemonitor.yaml
+- wildcard-cert.yaml 

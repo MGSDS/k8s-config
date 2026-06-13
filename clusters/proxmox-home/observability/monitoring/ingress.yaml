@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: monitoring 
+  namespace: monitoring
   name: grafana-ingress
   labels:
     app.kubernetes.io/component: ingress
@@ -9,17 +9,16 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    -  grafana.mgsds.com
-    secretName: grafana.mgsds.com-tls
+    - hosts:
+        - grafana.mgsds.com
   rules:
-  - host: grafana.mgsds.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-grafana
-            port:
-              number: 80
+    - host: grafana.mgsds.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-grafana
+                port:
+                  number: 80
