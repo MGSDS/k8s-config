@@ -6,6 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/name: searxng-ingress
     app.kubernetes.io/component: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.searxng.svc.cluster.local/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://search.mgsds.com/oauth2/start?rd=$escaped_request_uri"
 spec:
   ingressClassName: nginx
   tls:
@@ -20,5 +23,30 @@ spec:
             backend:
               service:
                 name: searxng
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: searxng-oauth2-proxy-ingress
+  namespace: searxng
+  labels:
+    app.kubernetes.io/name: searxng-oauth2-proxy-ingress
+    app.kubernetes.io/component: ingress
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - search.mgsds.com
+  rules:
+    - host: search.mgsds.com
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy
                 port:
                   number: 80
