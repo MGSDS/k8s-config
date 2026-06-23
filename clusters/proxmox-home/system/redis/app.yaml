@@ -21,7 +21,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: ot-helm 
-      version: 0.24.0
+      version: 0.25.0
   install:
     createNamespace: true
   interval: 1m0s
