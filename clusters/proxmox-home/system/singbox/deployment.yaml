@@ -51,7 +51,7 @@ metadata:
   labels:
     app.kubernetes.io/name: singbox
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: singbox
   ports:
@@ -59,6 +59,20 @@ spec:
       port: 2080
       targetPort: http-proxy
       protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: singbox-external
+  namespace: singbox
+  labels:
+    app.kubernetes.io/name: singbox
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: singbox
+  ports:
     - name: mixed-proxy
       port: 2081
       targetPort: mixed-proxy
