@@ -22,10 +22,10 @@ spec:
           args: ["run", "-c", "/etc/sing-box/config.json"]
           ports:
             - name: http-proxy
-              containerPort: 2081
+              containerPort: 2080
               protocol: TCP
             - name: mixed-proxy
-              containerPort: 2080
+              containerPort: 2081
               protocol: TCP
           volumeMounts:
             - name: config
