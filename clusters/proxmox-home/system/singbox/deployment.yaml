@@ -27,6 +27,9 @@ spec:
             - name: mixed-proxy
               containerPort: 2081
               protocol: TCP
+            - name: mixed2-proxy
+              containerPort: 2082
+              protocol: TCP
           volumeMounts:
             - name: config
               mountPath: /etc/sing-box
@@ -59,6 +62,9 @@ spec:
       port: 2080
       targetPort: http-proxy
       protocol: TCP
+    - name: mixed2-proxy
+      port: 2082
+      targetPort: mixed2-proxy
 ---
 apiVersion: v1
 kind: Service
