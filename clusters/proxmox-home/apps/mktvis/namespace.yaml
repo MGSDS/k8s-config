@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mktvis
+  labels:
+    app.kubernetes.io/name: mktvis
+    app.kubernetes.io/component: namespace

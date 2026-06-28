@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="//unpkg.com/globe.gl"></script>
+    </head>
+    <body>
+        <div id="globe"></div>
+        <script>
+            const world = Globe()(document.getElementById("globe"));
+            fetch("http://192.168.88.160:5555/")
+                .then((r) => r.json())
+                .then((connections) => {
+                    world
+                        .pointsData(connections)
+                        .lat((d) => d.lat)
+                        .lng((d) => d.lon)
+                        .size(0.5)
+                        .color(() => "#00ffcc");
+                });
+        </script>
+    </body>
+</html>

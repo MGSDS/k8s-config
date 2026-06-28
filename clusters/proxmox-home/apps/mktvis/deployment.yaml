@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mktvis
+  namespace: mktvis
+  labels:
+    app.kubernetes.io/name: mktvis
+    app.kubernetes.io/component: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mktvis
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mktvis
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: mktvis
+          image: ghcr.io/mgsds/mktvis:main
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: MKTVIS_CITY_DB_PATH
+              value: /var/opt/mktvis/GeoLite2-City.mmdb
+            - name: MKTVIS_ASN_DB_PATH
+              value: /var/opt/mktvis/GeoLite2-ASN.mmdb
+            - name: MKTVIS_DB_DIR
+              value: /var/opt/mktvis
+          envFrom:
+            - secretRef:
+                name: mktvis-config
+          volumeMounts:
+            - name: data
+              mountPath: /var/opt/mktvis
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mktvis-data
