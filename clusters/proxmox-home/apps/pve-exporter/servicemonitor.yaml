@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pve-exporter
+  namespace: pve-exporter
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: pve-exporter
+  namespaceSelector:
+    matchNames:
+      - pve-exporter
+  endpoints:
+    - port: metrics
+      path: /pve
+      params:
+        target: ['192.168.88.2']
+        cluster: ['1']
+        node: ['1']
+      interval: 60s
+      relabelings:
+        - sourceLabels: [__param_target]
+          targetLabel: instance

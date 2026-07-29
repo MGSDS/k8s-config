@@ -121,6 +121,12 @@ spec:
             datasource:
               - name: DS_PROMETHEUS
                 value: Prometheus
+          proxmox-via-prometheus:
+            gnetId: 10347
+            revision: 5
+            datasource:
+              - name: DS_PROMETHEUS
+                value: Prometheus
       plugins:
         - victoriametrics-logs-datasource
       persistence:

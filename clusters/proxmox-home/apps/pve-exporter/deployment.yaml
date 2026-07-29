@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pve-exporter
+  namespace: pve-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pve-exporter
+  template:
+    metadata:
+      labels:
+        app: pve-exporter
+    spec:
+      containers:
+        - name: pve-exporter
+          image: prompve/prometheus-pve-exporter:latest
+          ports:
+            - containerPort: 9221
+              name: metrics
+          envFrom:
+            - secretRef:
+                name: pve-credentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pve-exporter
+  namespace: pve-exporter
+  labels:
+    app: pve-exporter
+spec:
+  selector:
+    app: pve-exporter
+  ports:
+    - name: metrics
+      port: 9221
+      targetPort: 9221
