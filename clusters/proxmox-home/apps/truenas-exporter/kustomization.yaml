@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: truenas-exporter
 resources:
   - namespace.yaml
-  - secret.yaml
+  - configmap.yaml
   - deployment.yaml
   - servicemonitor.yaml

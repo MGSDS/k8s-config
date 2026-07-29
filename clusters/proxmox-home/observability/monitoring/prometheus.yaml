@@ -121,12 +121,6 @@ spec:
             datasource:
               - name: DS_PROMETHEUS
                 value: Prometheus
-          truenas-scale:
-            gnetId: 18182
-            revision: 3
-            datasource:
-              - name: DS_PROMETHEUS
-                value: Prometheus
       plugins:
         - victoriametrics-logs-datasource
       persistence:

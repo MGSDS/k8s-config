@@ -15,19 +15,26 @@ spec:
         app: truenas-exporter
     spec:
       containers:
-        - name: truenas-exporter
-          image: ghcr.io/tomaae/truenas_exporter:latest
+        - name: graphite-exporter
+          image: prom/graphite-exporter:latest
+          args:
+            - --graphite.mapping-config=/etc/graphite-exporter/graphite_mapping.conf
+            - --graphite.listen-address=:2003
+            - --web.listen-address=:9109
           ports:
-            - containerPort: 8685
+            - containerPort: 2003
+              name: graphite
+              protocol: TCP
+            - containerPort: 9109
               name: metrics
           volumeMounts:
-            - name: config
-              mountPath: /app/config
+            - name: mapping
+              mountPath: /etc/graphite-exporter
               readOnly: true
       volumes:
-        - name: config
-          secret:
-            secretName: truenas-exporter-config
+        - name: mapping
+          configMap:
+            name: graphite-mapping
 ---
 apiVersion: v1
 kind: Service
@@ -37,9 +44,14 @@ metadata:
   labels:
     app: truenas-exporter
 spec:
+  type: LoadBalancer
   selector:
     app: truenas-exporter
   ports:
+    - name: graphite
+      port: 2003
+      targetPort: 2003
+      protocol: TCP
     - name: metrics
-      port: 8685
-      targetPort: 8685
+      port: 9109
+      targetPort: 9109
