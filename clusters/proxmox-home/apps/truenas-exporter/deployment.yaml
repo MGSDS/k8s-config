@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: truenas-exporter
+  namespace: truenas-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: truenas-exporter
+  template:
+    metadata:
+      labels:
+        app: truenas-exporter
+    spec:
+      containers:
+        - name: truenas-exporter
+          image: ghcr.io/tomaae/truenas_exporter:latest
+          ports:
+            - containerPort: 8685
+              name: metrics
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+      volumes:
+        - name: config
+          secret:
+            secretName: truenas-exporter-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: truenas-exporter
+  namespace: truenas-exporter
+  labels:
+    app: truenas-exporter
+spec:
+  selector:
+    app: truenas-exporter
+  ports:
+    - name: metrics
+      port: 8685
+      targetPort: 8685

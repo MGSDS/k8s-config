@@ -65,6 +65,11 @@ spec:
               - targets: ['192.168.88.2:9100']
                 labels:
                   instance: proxmox
+          - job_name: truenas-node
+            static_configs:
+              - targets: ['192.168.88.25:9100']
+                labels:
+                  instance: truenas
 
     grafana:
       envFromSecret: grafana-proxy
@@ -118,6 +123,12 @@ spec:
           node-exporter-full:
             gnetId: 1860
             revision: 37
+            datasource:
+              - name: DS_PROMETHEUS
+                value: Prometheus
+          truenas-scale:
+            gnetId: 18182
+            revision: 3
             datasource:
               - name: DS_PROMETHEUS
                 value: Prometheus
