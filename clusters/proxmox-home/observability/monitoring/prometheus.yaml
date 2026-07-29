@@ -59,6 +59,12 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
+        additionalScrapeConfigs:
+          - job_name: proxmox-node
+            static_configs:
+              - targets: ['192.168.88.2:9100']
+                labels:
+                  instance: proxmox
 
     grafana:
       envFromSecret: grafana-proxy
@@ -93,6 +99,13 @@ spec:
               disableDeletion: true
               options:
                 path: /var/lib/grafana/dashboards/victorialogs
+            - name: infrastructure
+              orgId: 1
+              folder: Infrastructure
+              type: file
+              disableDeletion: true
+              options:
+                path: /var/lib/grafana/dashboards/infrastructure
       dashboards:
         victorialogs:
           victoria-logs-explorer:
@@ -101,6 +114,13 @@ spec:
             datasource:
               - name: DS_VICTORIALOGS
                 value: VictoriaLogs
+        infrastructure:
+          node-exporter-full:
+            gnetId: 1860
+            revision: 37
+            datasource:
+              - name: DS_PROMETHEUS
+                value: Prometheus
       plugins:
         - victoriametrics-logs-datasource
       persistence:
