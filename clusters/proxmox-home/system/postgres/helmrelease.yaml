@@ -12,5 +12,5 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: postgres-operator-repo
-      version: 1.15.1
+      version: 2.0.1
   interval: 1m0s
