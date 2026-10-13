@@ -6,4 +6,4 @@ metadata:
   namespace: kube-system
 data:
   mgsds.override: |
-    rewrite name regex (.+)\.mgsds\.com ingress-nginx-controller.ingress-nginx.svc.cluster.local answer auto
+    rewrite name regex (box|dash|grafana|immich|longhorn|nas|pocket-id|share|vlogs)\.mgsds\.com ingress-nginx-controller.ingress-nginx.svc.cluster.local answer auto
