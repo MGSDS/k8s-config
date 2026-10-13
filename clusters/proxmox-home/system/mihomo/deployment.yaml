@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mihomo
+  namespace: mihomo
+  labels:
+    app.kubernetes.io/name: mihomo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mihomo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mihomo
+        app: mihomo
+    spec:
+      initContainers:
+        - name: fetch-ui
+          image: alpine/git:latest
+          command:
+            - sh
+            - -c
+            - "git clone --depth 1 --branch gh-pages https://github.com/MetaCubeX/metacubexd.git /ui"
+          volumeMounts:
+            - name: ui
+              mountPath: /ui
+      containers:
+        - name: mihomo
+          image: metacubex/mihomo:latest
+          args: ["-d", "/etc/mihomo"]
+          ports:
+            - name: http-proxy
+              containerPort: 2080
+              protocol: TCP
+            - name: mixed-proxy
+              containerPort: 2081
+              protocol: TCP
+            - name: ui
+              containerPort: 9090
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mihomo/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: providers
+              mountPath: /etc/mihomo/providers
+            - name: ui
+              mountPath: /etc/mihomo/ui
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          secret:
+            secretName: mihomo-config
+        - name: providers
+          emptyDir: {}
+        - name: ui
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mihomo
+  namespace: mihomo
+  labels:
+    app.kubernetes.io/name: mihomo
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: mihomo
+  ports:
+    - name: http-proxy
+      port: 2080
+      targetPort: http-proxy
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mihomo-external
+  namespace: mihomo
+  labels:
+    app.kubernetes.io/name: mihomo
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: mihomo
+  ports:
+    - name: mixed-proxy
+      port: 2081
+      targetPort: mixed-proxy
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mihomo-ui
+  namespace: mihomo
+  labels:
+    app.kubernetes.io/name: mihomo
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app.kubernetes.io/name: mihomo
+  ports:
+    - name: ui
+      port: 9090
+      targetPort: ui
+      protocol: TCP
