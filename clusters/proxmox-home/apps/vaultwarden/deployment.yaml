@@ -53,6 +53,8 @@ spec:
                   key: token
             - name: SSO_ENABLED
               value: "true"
+            - name: SSO_ONLY
+              value: "true"
             - name: SSO_AUTHORITY
               value: https://pocket-id.mgsds.com
             - name: SSO_PKCE
