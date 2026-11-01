@@ -1,0 +1,27 @@
+kind: postgresql
+apiVersion: acid.zalan.do/v1
+metadata:
+  name: vaultwarden-db
+  namespace: vaultwarden
+  labels:
+    team: acid
+    app.kubernetes.io/name: vaultwarden-db
+    app.kubernetes.io/component: database
+spec:
+  teamId: acid
+  postgresql:
+    version: "17"
+  numberOfInstances: 1
+  volume:
+    size: 2Gi
+  users:
+    vaultwarden-user: []
+  databases:
+    vaultwarden: vaultwarden-user
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
