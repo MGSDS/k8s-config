@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mindwtr-cloud
+  namespace: mindwtr-cloud
+  labels:
+    app.kubernetes.io/name: mindwtr-cloud
+    app.kubernetes.io/component: deployment
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mindwtr-cloud
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mindwtr-cloud
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: mindwtr-cloud
+          image: ghcr.io/dongdongbh/mindwtr-cloud:1.3.7
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MINDWTR_CLOUD_AUTH_TOKENS
+              valueFrom:
+                secretKeyRef:
+                  name: mindwtr-cloud-auth
+                  key: tokens
+            - name: MINDWTR_CLOUD_CORS_ORIGIN
+              value: https://mindwtr.mgsds.com
+            - name: MINDWTR_CLOUD_DATA_DIR
+              value: /data
+          ports:
+            - name: http
+              containerPort: 8787
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mindwtr-cloud
