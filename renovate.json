@@ -4,6 +4,13 @@
     "config:recommended"
   ],
   "flux": {
-    "fileMatch": ["clusters/proxmox-home/.+\\.yaml$"]
+    "managerFilePatterns": [
+      "/clusters/proxmox-home/.+\\.yaml$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/clusters/proxmox-home/.+/deployment\\.yaml$/"
+    ]
   }
 }
