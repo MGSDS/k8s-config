@@ -6,6 +6,7 @@ resources:
   - postgres.yaml
   - pvc.yaml
   - secret.yaml
+  - oidc-secret.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml

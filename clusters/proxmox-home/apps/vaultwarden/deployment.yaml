@@ -51,6 +51,24 @@ spec:
                 secretKeyRef:
                   name: vaultwarden-admin-token
                   key: token
+            - name: SSO_ENABLED
+              value: "true"
+            - name: SSO_AUTHORITY
+              value: https://pocket-id.mgsds.com
+            - name: SSO_PKCE
+              value: "true"
+            - name: SSO_SCOPES
+              value: email profile groups offline_access
+            - name: SSO_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-oidc
+                  key: client-id
+            - name: SSO_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-oidc
+                  key: client-secret
           ports:
             - name: http
               containerPort: 80
