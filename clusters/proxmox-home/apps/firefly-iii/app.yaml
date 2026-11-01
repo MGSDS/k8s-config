@@ -1,0 +1,70 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: firefly-iii
+  namespace: firefly-iii
+spec:
+  interval: 5m
+  url: https://firefly-iii.github.io/kubernetes/
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: firefly-iii
+  namespace: firefly-iii
+spec:
+  chart:
+    spec:
+      chart: firefly-iii
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: firefly-iii
+      version: 1.10.2
+  install:
+    createNamespace: true
+  interval: 1m0s
+  releaseName: firefly-iii
+  targetNamespace: firefly-iii
+  values:
+    deploymentStrategyType: Recreate
+    persistence:
+      storageClassName: longhorn
+      storage: 5Gi
+    config:
+      env:
+        APP_URL: https://firefly.mgsds.com
+        AUTHENTICATION_GUARD: remote_user_guard
+        AUTHENTICATION_GUARD_HEADER: HTTP_X_AUTH_REQUEST_EMAIL
+        COOKIE_SECURE: "true"
+        DB_CONNECTION: pgsql
+        DB_HOST: firefly-iii-db
+        DB_PORT: "5432"
+        DB_DATABASE: firefly
+        DB_USERNAME: firefly-iii-user
+        PGSQL_SSL_MODE: require
+        TRUSTED_PROXIES: "**"
+      envValueFrom:
+        DB_PASSWORD:
+          secretKeyRef:
+            name: firefly-iii-user.firefly-iii-db.credentials.postgresql.acid.zalan.do
+            key: password
+        STATIC_CRON_TOKEN:
+          secretKeyRef:
+            name: firefly-iii-cron
+            key: token
+    secrets:
+      env: null
+    cronjob:
+      enabled: true
+      auth:
+        existingSecret: firefly-iii-cron
+        secretKey: token
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
