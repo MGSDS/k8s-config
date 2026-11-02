@@ -23,7 +23,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: vaultwarden
-          image: docker.io/vaultwarden/server:1.37.4
+          image: docker.io/vaultwarden/server:1.37.5
           imagePullPolicy: IfNotPresent
           env:
             - name: DOMAIN
