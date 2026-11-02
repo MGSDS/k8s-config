@@ -38,7 +38,8 @@ spec:
       targetPath: env.HBOX_OIDC_CLIENT_SECRET
   values:
     image:
-      tag: "main"
+      repository: sysadminsmedia/homebox
+      tag: "0.26.0"
     postgresql:
       enabled: false
     persistence:

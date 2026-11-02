@@ -3,6 +3,9 @@
   "extends": [
     "config:recommended"
   ],
+  "ignorePaths": [
+    "**/system/flux-system/gotk-components.yaml"
+  ],
   "flux": {
     "managerFilePatterns": [
       "/clusters/proxmox-home/.+\\.yaml$/"
@@ -10,7 +13,34 @@
   },
   "kubernetes": {
     "managerFilePatterns": [
-      "/clusters/proxmox-home/.+/deployment\\.yaml$/"
+      "/clusters/proxmox-home/.+/deployment\\.yaml$/",
+      "/clusters/proxmox-home/apps/homebox/app\\.yaml$/"
     ]
-  }
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Kustomize remote GitHub raw manifest versions",
+      "fileMatch": [
+        "^clusters/proxmox-home/.+\\.yaml$"
+      ],
+      "matchStrings": [
+        "https://raw\\.githubusercontent\\.com/(?<depName>[^/\\s]+/[^/\\s]+)/v(?<currentValue>[^/\\s]+)/"
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Kustomize remote GitHub ref versions",
+      "fileMatch": [
+        "^clusters/proxmox-home/.+\\.yaml$"
+      ],
+      "matchStrings": [
+        "github\\.com/(?<depName>[^/\\s]+/[^/\\s]+)/[^?\\s]*\\?ref=v(?<currentValue>[^\"\\s]+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    }
+  ]
 }

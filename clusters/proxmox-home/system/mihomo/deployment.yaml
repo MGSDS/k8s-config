@@ -18,7 +18,7 @@ spec:
     spec:
       initContainers:
         - name: fetch-ui
-          image: alpine/git:latest
+          image: alpine/git:v2.54.0
           command:
             - sh
             - -c
@@ -28,7 +28,7 @@ spec:
               mountPath: /ui
       containers:
         - name: mihomo
-          image: metacubex/mihomo:latest
+          image: metacubex/mihomo:v1.19.33
           args: ["-d", "/etc/mihomo"]
           ports:
             - name: http-proxy
