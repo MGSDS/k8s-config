@@ -10,9 +10,9 @@ spec:
       chart: ingress-nginx
       reconcileStrategy: ChartVersion
       sourceRef:
-        kind: HelmRepository
+        kind: OCIRepository
         name: ingress-nginx
-      version: 4.15.1
+      version: "4.15.11"
   install:
     createNamespace: true
   interval: 1m0s
@@ -25,4 +25,3 @@ spec:
         default-ssl-certificate: ingress-nginx/wildcard-tls
       config:
         annotations-risk-level: Critical
-
